@@ -1,7 +1,7 @@
 import io.github.klahap.kotlin.util.eachMaxBy
 import io.github.klahap.kotlin.util.eachMinBy
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 class GroupingTest {
     @Test

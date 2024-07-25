@@ -1,16 +1,17 @@
 import com.vanniktech.maven.publish.SonatypeHost
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
+    kotlin("jvm") version "1.9.25"
     `maven-publish`
     id("com.vanniktech.maven.publish") version "0.28.0"
-    kotlin("jvm") version "1.9.23"
     id("org.jetbrains.kotlinx.kover") version "0.8.1"
 }
 
 group = "io.github.klahap.kotlin.util"
 version = System.getenv("KOTLIN_COLLECTION_UTIL_VERSION") ?: "1.0-SNAPSHOT"
+val githubId = "klahap/kotlin-util"
 
 repositories {
     mavenCentral()
@@ -21,19 +22,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
-tasks.test {
-    useJUnitPlatform()
+kotlin {
+    explicitApi()
+    compilerOptions {
+        allWarningsAsErrors = true
+        apiVersion.set(KotlinVersion.KOTLIN_1_9)
+        languageVersion.set(KotlinVersion.KOTLIN_1_9)
+    }
 }
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    languageVersion = "1.9"
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    languageVersion = "1.9"
-}
-
 
 mavenPublishing {
     coordinates(
@@ -44,11 +40,11 @@ mavenPublishing {
     pom {
         name = "kotlin-util"
         description = "Enhanced Kotlin collection functions for simpler code"
-        url = "https://github.com/klahap/kotlin-util"
+        url = "https://github.com/$githubId"
         licenses {
             license {
                 name = "MIT License"
-                url = "https://github.com/klahap/kotlin-util/blob/main/LICENSE"
+                url = "https://github.com/$githubId/blob/main/LICENSE"
             }
         }
         developers {
@@ -60,9 +56,9 @@ mavenPublishing {
             }
         }
         scm {
-            url = "https://github.com/klahap/kotlin-util"
-            connection = "scm:git:https://github.com/klahap/kotlin-util.git"
-            developerConnection = "scm:git:git@github.com:klahap/kotlin-util.git"
+            url = "https://github.com/$githubId"
+            connection = "scm:git:https://github.com/$githubId.git"
+            developerConnection = "scm:git:git@github.com:$githubId.git"
         }
     }
     publishToMavenCentral(

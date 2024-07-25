@@ -1,7 +1,11 @@
 name: Check
 
 on:
-  push
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - '*'
 
 permissions:
   contents: read
@@ -9,9 +13,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21

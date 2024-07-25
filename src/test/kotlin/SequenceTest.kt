@@ -1,6 +1,6 @@
 import io.github.klahap.kotlin.util.*
 import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 class SequenceTest {
     @Test

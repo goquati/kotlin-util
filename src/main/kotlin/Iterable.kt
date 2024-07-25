@@ -1,21 +1,21 @@
 package io.github.klahap.kotlin.util
 
-fun <T> Iterable<T>.take(n: Int, default: T): List<T> {
+public fun <T> Iterable<T>.take(n: Int, default: T): List<T> {
     val result = take(n)
     return result + List(n - result.size) { default }
 }
 
-fun <T> Collection<T>.isDistinct(): Boolean =
+public fun <T> Collection<T>.isDistinct(): Boolean =
     size == toSet().size
 
-inline fun <T, K> Iterable<T>.isDistinctBy(keySelector: (T) -> K): Boolean =
+public inline fun <T, K> Iterable<T>.isDistinctBy(keySelector: (T) -> K): Boolean =
     map { keySelector(it) }.isDistinct()
 
-inline fun <T, K : Any> Iterable<T>.groupByNotNull(keySelector: (T) -> K?): Map<K, List<T>> =
+public inline fun <T, K : Any> Iterable<T>.groupByNotNull(keySelector: (T) -> K?): Map<K, List<T>> =
     mapNotNull { (keySelector(it) ?: return@mapNotNull null) to it }
         .groupBy({ it.first }, { it.second })
 
-inline fun <T, K : Any, V : Any> Iterable<T>.groupByNotNull(
+public inline fun <T, K : Any, V : Any> Iterable<T>.groupByNotNull(
     keySelector: (T) -> K?,
     valueTransform: (T) -> V?
 ): Map<K, List<V>> =
@@ -26,7 +26,7 @@ inline fun <T, K : Any, V : Any> Iterable<T>.groupByNotNull(
     }.groupBy({ it.first }, { it.second })
 
 
-inline fun <T, K : Any, V : Any> Iterable<T>.associateNotNull(
+public inline fun <T, K : Any, V : Any> Iterable<T>.associateNotNull(
     valueSelector: (T) -> Pair<K?, V?>?,
 ): Map<K, V> = mapNotNull {
     val (k, v) = valueSelector(it) ?: return@mapNotNull null
@@ -34,13 +34,13 @@ inline fun <T, K : Any, V : Any> Iterable<T>.associateNotNull(
     k to v
 }.toMap()
 
-inline fun <T, K : Any> Iterable<T>.associateByNotNull(
+public inline fun <T, K : Any> Iterable<T>.associateByNotNull(
     keySelector: (T) -> K?,
 ): Map<K, T> = mapNotNull {
     (keySelector(it) ?: return@mapNotNull null) to it
 }.toMap()
 
-inline fun <T, V : Any> Iterable<T>.associateWithNotNull(
+public inline fun <T, V : Any> Iterable<T>.associateWithNotNull(
     valueSelector: (T) -> V?,
 ): Map<T, V> = mapNotNull {
     it to (valueSelector(it) ?: return@mapNotNull null)
