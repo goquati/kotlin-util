@@ -25,7 +25,7 @@ jobs:
         run: ./gradlew koverVerify
 
   documentation:
-    name: build documentation
+    name: publish docs
     needs:
       - check
     runs-on: ubuntu-latest
@@ -39,6 +39,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Generate api docs with dokka
+        env:
+          KOTLIN_COLLECTION_UTIL_VERSION: ${{ github.ref_name }}
         run: ./gradlew dokkaHtml
       - name: Upload pages
         uses: actions/upload-pages-artifact@v1
@@ -49,7 +51,7 @@ jobs:
         uses: actions/deploy-pages@v1
 
   publish:
-    name: publish
+    name: publish package
     needs:
       - check
     runs-on: ubuntu-latest
