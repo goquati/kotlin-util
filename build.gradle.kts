@@ -7,6 +7,7 @@ plugins {
     `maven-publish`
     id("com.vanniktech.maven.publish") version "0.28.0"
     id("org.jetbrains.kotlinx.kover") version "0.8.1"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "io.github.klahap.kotlin.util"
@@ -78,4 +79,8 @@ kover {
             }
         }
     }
+}
+
+tasks.dokkaHtml.configure {
+    moduleVersion = version as String
 }
