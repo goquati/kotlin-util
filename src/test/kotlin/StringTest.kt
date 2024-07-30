@@ -2,7 +2,7 @@ import io.github.klahap.kotlin.util.takeIfNotBlank
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
-class StringUtil {
+class StringTest {
     @Test
     fun `test takeIfNotBlank`() {
         " ".takeIfNotBlank() shouldBe null
