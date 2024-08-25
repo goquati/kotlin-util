@@ -22,7 +22,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: check
-        run: ./gradlew koverVerify
+        run: ./gradlew check
 
   documentation:
     name: publish docs
@@ -40,7 +40,7 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Generate api docs with dokka
         env:
-          KOTLIN_COLLECTION_UTIL_VERSION: ${{ github.ref_name }}
+          GIT_TAG_VERSION: ${{ github.ref_name }}
         run: ./gradlew dokkaHtml
       - name: Upload pages
         uses: actions/upload-pages-artifact@v1
@@ -64,7 +64,7 @@ jobs:
           distribution: 'temurin'
       - name: publish
         env:
-          KOTLIN_COLLECTION_UTIL_VERSION: ${{ github.ref_name }}
+          GIT_TAG_VERSION: ${{ github.ref_name }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALUSERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALPASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEY }}

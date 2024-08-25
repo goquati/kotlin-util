@@ -1,10 +1,10 @@
-import io.github.klahap.kotlin.util.*
+import io.github.goquati.kotlin.util.*
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class SequenceTest {
     @Test
-    fun `test take`() {
+    fun testTake() {
         sequenceOf<String>().take(0, default = "apple").toList() shouldBe listOf()
         sequenceOf<String>().take(3, default = "apple").toList() shouldBe listOf("apple", "apple", "apple")
         sequenceOf("banana").take(3, default = "apple").toList() shouldBe listOf("banana", "apple", "apple")
@@ -13,7 +13,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test isDistinct`() {
+    fun testIsDistinct() {
         sequenceOf<String>().isDistinct() shouldBe true
         sequenceOf("apple", "banana", "orange").isDistinct() shouldBe true
         sequenceOf("apple", "banana", "avocado").isDistinct() shouldBe true
@@ -21,7 +21,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test isDistinctBy`() {
+    fun testIsDistinctBy() {
         sequenceOf<String>().isDistinctBy { it[0] } shouldBe true
         sequenceOf("apple", "banana", "orange").isDistinctBy { it[0] } shouldBe true
         sequenceOf("apple", "banana", "avocado").isDistinctBy { it[0] } shouldBe false
@@ -29,7 +29,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test groupByNotNull`() {
+    fun testGroupByNotNull() {
         sequenceOf<String>().groupByNotNull { it.length } shouldBe mapOf()
         sequenceOf<String?>(null).groupByNotNull { it?.length } shouldBe mapOf()
         sequenceOf("apple", "banana", "orange").groupByNotNull { it.length } shouldBe mapOf(
@@ -43,7 +43,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test groupByNotNull (with value transform)`() {
+    fun testGroupByNotNullWithValueTransform() {
         sequenceOf<String?>(null).groupByNotNull({ it?.get(0) }, { it?.length }) shouldBe mapOf()
         sequenceOf("apple", "banana", "avocado").groupByNotNull({ it[0] }, { it.length }) shouldBe mapOf(
             'a' to listOf(5, 7),
@@ -68,7 +68,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test associateNotNull`() {
+    fun testAssociateNotNull() {
         sequenceOf<String>().associateNotNull { it.length to it } shouldBe mapOf()
         sequenceOf<String?>(null).associateNotNull { it?.length to it } shouldBe mapOf()
         sequenceOf<String?>(null).associateNotNull { it to it?.length } shouldBe mapOf()
@@ -82,12 +82,16 @@ class SequenceTest {
             6 to "banana",
             7 to "avocado",
         )
-        sequenceOf("apple", null, "banana", "orange").associateNotNull { (it ?: "cherry") to it?.length } shouldBe mapOf(
+        sequenceOf("apple", null, "banana", "orange").associateNotNull {
+            (it ?: "cherry") to it?.length
+        } shouldBe mapOf(
             "apple" to 5,
             "banana" to 6,
             "orange" to 6,
         )
-        sequenceOf("apple", null, "banana", "avocado").associateNotNull { it?.length to (it ?: "cherry") } shouldBe mapOf(
+        sequenceOf("apple", null, "banana", "avocado").associateNotNull {
+            it?.length to (it ?: "cherry")
+        } shouldBe mapOf(
             5 to "apple",
             6 to "banana",
             7 to "avocado",
@@ -101,7 +105,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test associateByNotNull`() {
+    fun testAssociateByNotNull() {
         sequenceOf<String>().associateByNotNull { it.length } shouldBe mapOf()
         sequenceOf<String?>(null).associateByNotNull { it?.length } shouldBe mapOf()
         sequenceOf("apple", "banana", "avocado").associateByNotNull { it.length } shouldBe mapOf(
@@ -117,7 +121,7 @@ class SequenceTest {
     }
 
     @Test
-    fun `test associateWithNotNull`() {
+    fun testAssociateWithNotNull() {
         sequenceOf<String>().associateWithNotNull { it.length } shouldBe mapOf()
         sequenceOf<String?>(null).associateWithNotNull { it?.length } shouldBe mapOf()
         sequenceOf("apple", "banana", "orange").associateWithNotNull { it.length } shouldBe mapOf(

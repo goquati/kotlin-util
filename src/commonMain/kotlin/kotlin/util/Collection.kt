@@ -1,4 +1,4 @@
-package io.github.klahap.kotlin.util
+package io.github.goquati.kotlin.util
 
 
 public fun <T> Collection<T>.containsAny(elements: Iterable<T>): Boolean =

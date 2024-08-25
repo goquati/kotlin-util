@@ -1,4 +1,4 @@
-package io.github.klahap.kotlin.util
+package io.github.goquati.kotlin.util
 
 public fun <T> Sequence<T>.take(n: Int, default: T): Sequence<T> = sequence {
     val result = take(n).toList()

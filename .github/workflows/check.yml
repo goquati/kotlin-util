@@ -21,4 +21,4 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: check
-        run: ./gradlew koverVerify
+        run: ./gradlew check

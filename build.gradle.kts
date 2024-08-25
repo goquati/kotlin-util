@@ -1,72 +1,54 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    kotlin("jvm") version "1.9.25"
+    kotlin("multiplatform") version "2.0.20"
+    id("org.jetbrains.kotlinx.kover") version "0.8.1"
     `maven-publish`
     id("com.vanniktech.maven.publish") version "0.28.0"
-    id("org.jetbrains.kotlinx.kover") version "0.8.1"
     id("org.jetbrains.dokka") version "1.9.20"
 }
 
-group = "io.github.klahap.kotlin.util"
-version = System.getenv("KOTLIN_COLLECTION_UTIL_VERSION") ?: "1.0-SNAPSHOT"
-val githubId = "klahap/kotlin-util"
+val githubUser = "goquati"
+val artifactId = "kotlin-util"
+group = "io.github.$githubUser"
+version = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation("io.kotest:kotest-assertions-core:5.9.0")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-}
-
 kotlin {
-    explicitApi()
-    compilerOptions {
-        allWarningsAsErrors = true
-        apiVersion.set(KotlinVersion.KOTLIN_1_9)
-        languageVersion.set(KotlinVersion.KOTLIN_1_9)
+    jvm()
+    js {
+        browser()
+        nodejs()
     }
-}
-
-mavenPublishing {
-    coordinates(
-        groupId = group as String,
-        artifactId = "kotlin-util",
-        version = version as String
-    )
-    pom {
-        name = "kotlin-util"
-        description = "Enhanced Kotlin collection functions for simpler code"
-        url = "https://github.com/$githubId"
-        licenses {
-            license {
-                name = "MIT License"
-                url = "https://github.com/$githubId/blob/main/LICENSE"
+    macosX64()
+    macosArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
+    sourceSets {
+        val commonMain by getting {
+            explicitApi()
+            @OptIn(ExperimentalKotlinGradlePluginApi::class)
+            compilerOptions {
+                allWarningsAsErrors = true
+                apiVersion.set(KotlinVersion.KOTLIN_2_0)
+                languageVersion.set(KotlinVersion.KOTLIN_2_0)
+            }
+            dependencies {}
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-test")
+                implementation("io.kotest:kotest-assertions-core:5.9.0")
             }
         }
-        developers {
-            developer {
-                id = "klahap"
-                name = "Klaus Happacher"
-                email = "k.happacher@gmail.com"
-                url = "https://github.com/klahap"
-            }
-        }
-        scm {
-            url = "https://github.com/$githubId"
-            connection = "scm:git:https://github.com/$githubId.git"
-            developerConnection = "scm:git:git@github.com:$githubId.git"
-        }
     }
-    publishToMavenCentral(
-        SonatypeHost.CENTRAL_PORTAL,
-        automaticRelease = true,
-    )
-    signAllPublications()
 }
 
 kover {
@@ -79,6 +61,42 @@ kover {
             }
         }
     }
+}
+
+mavenPublishing {
+    coordinates(
+        groupId = group as String,
+        artifactId = artifactId,
+        version = version as String
+    )
+    pom {
+        name = artifactId
+        description = "Enhanced Kotlin collection functions for simpler code"
+        url = "https://github.com/$githubUser/$artifactId"
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://github.com/$githubUser/$artifactId/blob/main/LICENSE"
+            }
+        }
+        developers {
+            developer {
+                id = githubUser
+                name = githubUser
+                url = "https://github.com/$githubUser"
+            }
+        }
+        scm {
+            url = "https://github.com/$githubUser/$artifactId"
+            connection = "scm:git:https://github.com/$githubUser/$artifactId.git"
+            developerConnection = "scm:git:git@github.com:$githubUser/$artifactId.git"
+        }
+    }
+    publishToMavenCentral(
+        SonatypeHost.CENTRAL_PORTAL,
+        automaticRelease = true,
+    )
+    signAllPublications()
 }
 
 tasks.dokkaHtml.configure {

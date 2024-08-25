@@ -1,7 +1,7 @@
 # kotlin-util
 
-![GitHub License](https://img.shields.io/github/license/klahap/kotlin-util)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/klahap/kotlin-util/check.yml)
+![GitHub License](https://img.shields.io/github/license/goquati/kotlin-util)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goquati/kotlin-util/check.yml)
 ![Static Badge](https://img.shields.io/badge/coverage-100%25-success)
 
 ## Overview
@@ -22,7 +22,7 @@ Add the following dependency to your `build.gradle.kts` file:
 
 ```kotlin
 dependencies {
-    implementation("io.github.klahap:kotlin-util:$VERSION")
+    implementation("io.github.goquati:kotlin-util:$VERSION")
 }
 ```
 

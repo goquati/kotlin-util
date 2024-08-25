@@ -1,4 +1,4 @@
-package io.github.klahap.kotlin.util
+package io.github.goquati.kotlin.util
 
 public inline fun <K, V, R : Any> Map<out K, V>.mapValuesNotNull(
     transform: (Map.Entry<K, V>) -> R?,

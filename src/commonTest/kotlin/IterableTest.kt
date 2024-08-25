@@ -1,11 +1,11 @@
-import io.github.klahap.kotlin.util.*
+import io.github.goquati.kotlin.util.*
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 
 class IterableTest {
     @Test
-    fun `test take`() {
+    fun testTake() {
         listOf<String>().take(0, default = "apple") shouldBe listOf()
         listOf<String>().take(3, default = "apple") shouldBe listOf("apple", "apple", "apple")
         listOf("banana").take(3, default = "apple") shouldBe listOf("banana", "apple", "apple")
@@ -15,7 +15,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test isDistinct`() {
+    fun testIsDistinct() {
         listOf<String>().isDistinct() shouldBe true
         listOf("apple", "banana", "orange").isDistinct() shouldBe true
         listOf("apple", "banana", "avocado").isDistinct() shouldBe true
@@ -23,7 +23,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test isDistinctBy`() {
+    fun testIsDistinctBy() {
         listOf<String>().isDistinctBy { it[0] } shouldBe true
         listOf("apple", "banana", "orange").isDistinctBy { it[0] } shouldBe true
         listOf("apple", "banana", "avocado").isDistinctBy { it[0] } shouldBe false
@@ -31,7 +31,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test groupByNotNull`() {
+    fun testGroupByNotNull() {
         listOf<String>().groupByNotNull { it.length } shouldBe mapOf()
         listOf<String?>(null).groupByNotNull { it?.length } shouldBe mapOf()
         listOf("apple", "banana", "orange").groupByNotNull { it.length } shouldBe mapOf(
@@ -45,7 +45,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test groupByNotNull (with value transform)`() {
+    fun testGroupByNotNullWithValueTransform() {
         listOf<String?>(null).groupByNotNull({ it?.get(0) }, { it?.length }) shouldBe mapOf()
         listOf("apple", "banana", "avocado").groupByNotNull({ it[0] }, { it.length }) shouldBe mapOf(
             'a' to listOf(5, 7),
@@ -66,7 +66,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test associateNotNull`() {
+    fun testAssociateNotNull() {
         listOf<String>().associateNotNull { it.length to it } shouldBe mapOf()
         listOf<String?>(null).associateNotNull { it?.length to it } shouldBe mapOf()
         listOf<String?>(null).associateNotNull { it to it?.length } shouldBe mapOf()
@@ -99,7 +99,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test associateByNotNull`() {
+    fun testAssociateByNotNull() {
         listOf<String>().associateByNotNull { it.length } shouldBe mapOf()
         listOf<String?>(null).associateByNotNull { it?.length } shouldBe mapOf()
         listOf("apple", "banana", "avocado").associateByNotNull { it.length } shouldBe mapOf(
@@ -115,7 +115,7 @@ class IterableTest {
     }
 
     @Test
-    fun `test associateWithNotNull`() {
+    fun testAssociateWithNotNull() {
         listOf<String>().associateWithNotNull { it.length } shouldBe mapOf()
         listOf<String?>(null).associateWithNotNull { it?.length } shouldBe mapOf()
         listOf("apple", "banana", "orange").associateWithNotNull { it.length } shouldBe mapOf(

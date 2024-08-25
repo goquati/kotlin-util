@@ -1,11 +1,11 @@
-import io.github.klahap.kotlin.util.eachMaxBy
-import io.github.klahap.kotlin.util.eachMinBy
+import io.github.goquati.kotlin.util.eachMaxBy
+import io.github.goquati.kotlin.util.eachMinBy
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class GroupingTest {
     @Test
-    fun `test eachMinBy`() {
+    fun testEachMinBy() {
         listOf<String>()
             .groupingBy { it[0] }
             .eachMinBy { it.length } shouldBe
@@ -22,7 +22,7 @@ class GroupingTest {
     }
 
     @Test
-    fun `test eachMaxBy`() {
+    fun testEachMaxBy() {
         listOf<String>()
             .groupingBy { it[0] }
             .eachMaxBy { it.length } shouldBe
