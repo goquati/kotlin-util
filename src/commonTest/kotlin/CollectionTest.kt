@@ -1,9 +1,16 @@
 import io.github.goquati.kotlin.util.containsAny
 import io.github.goquati.kotlin.util.intersectAll
+import io.github.goquati.kotlin.util.takeIfNotEmpty
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class CollectionTest {
+    @Test
+    fun testTakeIfNotEmpty() {
+        listOf(1,2,3).takeIfNotEmpty() shouldBe listOf(1,2,3)
+        listOf<Int>().takeIfNotEmpty() shouldBe null
+    }
+
     @Test
     fun testContainsAny() {
         listOf(1, 2, 3, 4).containsAny(2, 7, 8) shouldBe true
