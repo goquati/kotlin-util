@@ -32,6 +32,9 @@ kotlin {
     linuxArm64()
     mingwX64()
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
+        }
         val commonMain by getting {
             explicitApi()
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
