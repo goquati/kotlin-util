@@ -48,6 +48,13 @@ class ResultUtilTest {
     }
 
     @Test
+    fun testFlatten() {
+        Success(r1).flatten().failure shouldBe Error("r1")
+        Success(r2).flatten().success shouldBe "r2"
+        (Failure(Error("r1")) as Result<Result<String, Error>, Error>).flatten().failure shouldBe Error("r1")
+    }
+
+    @Test
     fun testFilter() {
         val data = listOf(
             Failure(1),

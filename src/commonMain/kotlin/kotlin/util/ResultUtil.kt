@@ -15,7 +15,7 @@ public fun <T> Result<T, *>.getOr(default: T): T = when {
     else -> success
 }
 
-public fun <T, E> Result<T, E>.getOr(block: (E) -> T): T {
+public inline fun <T, E> Result<T, E>.getOr(block: (E) -> T): T {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
         isFailure -> block(failure)
@@ -28,7 +28,7 @@ public fun <E> Result<*, E>.getFailureOr(default: E): E = when {
     else -> default
 }
 
-public fun <T, E> Result<T, E>.getFailureOr(block: (T) -> E): E {
+public inline fun <T, E> Result<T, E>.getFailureOr(block: (T) -> E): E {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
         isFailure -> failure
@@ -36,7 +36,7 @@ public fun <T, E> Result<T, E>.getFailureOr(block: (T) -> E): E {
     }
 }
 
-public fun <T1, T2, E> Result<T1, E>.map(block: (T1) -> T2): Result<T2, E> {
+public inline fun <T1, T2, E> Result<T1, E>.map(block: (T1) -> T2): Result<T2, E> {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
         isFailure -> asFailure
@@ -44,7 +44,7 @@ public fun <T1, T2, E> Result<T1, E>.map(block: (T1) -> T2): Result<T2, E> {
     }
 }
 
-public fun <T1, T2, E> Result<T1, E>.flatMap(block: (T1) -> Result<T2, E>): Result<T2, E> {
+public inline fun <T1, T2, E> Result<T1, E>.flatMap(block: (T1) -> Result<T2, E>): Result<T2, E> {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
         isFailure -> asFailure
@@ -52,12 +52,17 @@ public fun <T1, T2, E> Result<T1, E>.flatMap(block: (T1) -> Result<T2, E>): Resu
     }
 }
 
-public fun <T, E1, E2> Result<T, E1>.mapError(block: (E1) -> E2): Result<T, E2> {
+public inline fun <T, E1, E2> Result<T, E1>.mapError(block: (E1) -> E2): Result<T, E2> {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
         isFailure -> Failure(block(failure))
         else -> asSuccess
     }
+}
+
+public fun <T, E> Result<Result<T, E>, E>.flatten(): Result<T, E> = when {
+    isFailure -> asFailure
+    else -> success
 }
 
 public fun <T> Iterable<Result<T, *>>.filterSuccess(): List<T> = filter { it.isSuccess }.map { it.success }
