@@ -13,7 +13,7 @@ plugins {
 
 val githubUser = "goquati"
 val githubProject = "kotlin-util"
-val artifactId = "kotlin-util"
+val artifactId = "kotlin-coroutine-util"
 group = "io.github.$githubUser"
 version = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
 
@@ -27,11 +27,11 @@ kotlin {
         browser()
         nodejs()
     }
-    macosX64()
-    macosArm64()
-    linuxX64()
-    linuxArm64()
-    mingwX64()
+    //macosX64()
+    //macosArm64()
+    //linuxX64()
+    //linuxArm64()
+    //mingwX64()
     sourceSets {
         all {
             languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
@@ -44,12 +44,16 @@ kotlin {
                 apiVersion.set(KotlinVersion.KOTLIN_2_0)
                 languageVersion.set(KotlinVersion.KOTLIN_2_0)
             }
-            dependencies {}
+            dependencies {
+                implementation(project(":kotlin-util"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+            }
         }
         val commonTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core:5.9.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC")
             }
         }
     }
@@ -64,6 +68,13 @@ kover {
                 }
             }
         }
+        filters {
+            excludes {
+                annotatedBy(
+                    "io.github.goquati.kotlin.coroutine.util.KoverIgnore"
+                )
+            }
+        }
     }
 }
 
@@ -75,7 +86,7 @@ mavenPublishing {
     )
     pom {
         name = artifactId
-        description = "Enhanced Kotlin util functions for simpler code"
+        description = "Enhanced Kotlin coroutine util functions for simpler code"
         url = "https://github.com/$githubUser/$githubProject"
         licenses {
             license {

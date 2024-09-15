@@ -1,7 +1,6 @@
 package io.github.goquati.kotlin.util
 
-public fun <T> Collection<T>.takeIfNotEmpty(): Collection<T>? =
-    takeIf { it.isNotEmpty() }
+public fun <T, C : Collection<T>> C.takeIfNotEmpty(): C? = takeIf { it.isNotEmpty() }
 
 public fun <T> Collection<T>.containsAny(elements: Iterable<T>): Boolean =
     elements.any { contains(it) }

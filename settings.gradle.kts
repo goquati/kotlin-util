@@ -3,4 +3,7 @@ plugins {
 }
 rootProject.name = "kotlin-util-base"
 
-include("kotlin-util")
+include(
+    "kotlin-util",
+    "kotlin-util-coroutine",
+)
