@@ -1,39 +1,35 @@
 import org.jetbrains.dokka.DokkaConfiguration.Visibility
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
+    kotlin("jvm")
     id("org.jetbrains.dokka")
     id("org.jetbrains.kotlinx.kover")
+    `maven-publish`
+    id("com.vanniktech.maven.publish")
 }
 
 repositories {
     mavenCentral()
 }
+
+val githubUser = "goquati"
+val githubProject = "kotlin-util"
+val groupStr = "io.github.$githubUser"
+val versionStr = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
+
 subprojects {
     apply(plugin = "org.jetbrains.kotlinx.kover")
+    apply(plugin = "com.vanniktech.maven.publish")
 
     repositories {
         mavenCentral()
     }
 
-    val githubUser = "goquati"
-    val githubProject = "kotlin-util"
-    group = "io.github.$githubUser"
-    version = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
-    rootProject.ext {
-        set("url", "https://github.com/$githubUser/$githubProject")
-
-        set("licenseName", "MIT License")
-        set("licenseUrl", "https://github.com/$githubUser/$githubProject/blob/main/LICENSE")
-
-        set("developerId", githubUser)
-        set("developerName", githubUser)
-        set("developerUrl", "https://github.com/$githubUser")
-
-        set("scmUrl", "https://github.com/${githubUser}/${githubProject}")
-        set("scmConnection", "scm:git:https://github.com/${githubUser}/${githubProject}.git")
-        set("scmDeveloperConnection", "scm:git:git@github.com:${githubUser}/${githubProject}.git")
-    }
+    group = groupStr
+    version = versionStr
 
     kover {
         reports {
@@ -46,11 +42,40 @@ subprojects {
             }
         }
     }
+
+    mavenPublishing {
+        pom {
+            url = "https://github.com/$githubUser/$githubProject"
+            licenses {
+                license {
+                    name = "MIT License"
+                    url = "https://github.com/$githubUser/$githubProject/blob/main/LICENSE"
+                }
+            }
+            developers {
+                developer {
+                    id = githubUser
+                    name = githubUser
+                    url = "https://github.com/$githubUser"
+                }
+            }
+            scm {
+                url = "https://github.com/${githubUser}/${githubProject}"
+                connection = "scm:git:https://github.com/${githubUser}/${githubProject}.git"
+                developerConnection = "scm:git:git@github.com:${githubUser}/${githubProject}.git"
+            }
+        }
+        publishToMavenCentral(
+            SonatypeHost.CENTRAL_PORTAL,
+            automaticRelease = true,
+        )
+        signAllPublications()
+    }
 }
 
 tasks.dokkaHtml {
-    moduleName.set("io.github.goquati")
-    moduleVersion = version as String
+    moduleName.set(groupStr)
+    moduleVersion = versionStr
 
     dokkaSourceSets {
         register("commonMainSet") {
@@ -75,3 +100,41 @@ tasks.dokkaHtml {
         }
     }
 }
+
+
+val publishInit: MavenPublishBaseExtension.(artifactId: String, descriptionStr: String) -> Unit =
+    { artifactId: String, descriptionStr: String ->
+        coordinates(
+            groupId = groupStr,
+            artifactId = artifactId,
+            version = versionStr
+        )
+        pom {
+            name = artifactId
+            description = descriptionStr
+            url = "https://github.com/$githubUser/$githubProject"
+            licenses {
+                license {
+                    name = "MIT License"
+                    url = "https://github.com/$githubUser/$githubProject/blob/main/LICENSE"
+                }
+            }
+            developers {
+                developer {
+                    id = githubUser
+                    name = githubUser
+                    url = "https://github.com/$githubUser"
+                }
+            }
+            scm {
+                url = "https://github.com/${githubUser}/${githubProject}"
+                connection = "scm:git:https://github.com/${githubUser}/${githubProject}.git"
+                developerConnection = "scm:git:git@github.com:${githubUser}/${githubProject}.git"
+            }
+        }
+        publishToMavenCentral(
+            SonatypeHost.CENTRAL_PORTAL,
+            automaticRelease = true,
+        )
+        signAllPublications()
+    }

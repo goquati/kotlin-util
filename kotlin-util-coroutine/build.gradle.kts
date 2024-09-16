@@ -1,4 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -47,40 +46,16 @@ kotlin {
             }
         }
     }
+}
 
-    mavenPublishing {
-        coordinates(
-            groupId = group as String,
-            artifactId = artifactId,
-            version = version as String
-        )
-        pom {
-            name = artifactId
-            description = descriptionStr
-            url = rootProject.extra["url"] as String
-            licenses {
-                license {
-                    name = rootProject.extra["licenseName"] as String
-                    url = rootProject.extra["licenseUrl"] as String
-                }
-            }
-            developers {
-                developer {
-                    id = rootProject.extra["developerId"] as String
-                    name = rootProject.extra["developerName"] as String
-                    url = rootProject.extra["developerUrl"] as String
-                }
-            }
-            scm {
-                url = rootProject.extra["scmUrl"] as String
-                connection = rootProject.extra["scmConnection"] as String
-                developerConnection = rootProject.extra["scmDeveloperConnection"] as String
-            }
-        }
-        publishToMavenCentral(
-            SonatypeHost.CENTRAL_PORTAL,
-            automaticRelease = true,
-        )
-        signAllPublications()
+mavenPublishing {
+    coordinates(
+        groupId = rootProject.group as String,
+        artifactId = artifactId,
+        version = rootProject.version as String
+    )
+    pom {
+        name = artifactId
+        description = descriptionStr
     }
 }
