@@ -28,12 +28,16 @@ kotlin {
                 apiVersion.set(KotlinVersion.KOTLIN_2_0)
                 languageVersion.set(KotlinVersion.KOTLIN_2_0)
             }
-            dependencies {}
+            dependencies {
+                val kotlinxCoroutineVersion: String by rootProject.extra
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutineVersion")
+            }
         }
         val commonTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
             }
         }
     }
