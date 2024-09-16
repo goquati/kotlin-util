@@ -25,6 +25,10 @@ class ResultUtilTest {
         )
         data.filterSuccess().toList() shouldBe listOf("2", "4", "6")
         data.filterFailure().toList() shouldBe listOf(1, 3, 5)
+
+        val errors = mutableSetOf<Int>()
+        data.filterSuccess(errorHandler = {errors.add(it)}).toList() shouldBe listOf("2", "4", "6")
+        errors shouldBe setOf(1, 3, 5)
     }
 
     @Test

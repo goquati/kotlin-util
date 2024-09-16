@@ -6,8 +6,15 @@ import io.github.goquati.kotlin.util.Success
 import kotlinx.coroutines.flow.*
 
 
-public fun <T> Flow<Result<T, *>>.filterSuccess(): Flow<T> = mapNotNull { if (it.isSuccess) it.success else null }
 public fun <E> Flow<Result<*, E>>.filterFailure(): Flow<E> = mapNotNull { if (it.isFailure) it.failure else null }
+public fun <T> Flow<Result<T, *>>.filterSuccess(): Flow<T> = mapNotNull { if (it.isSuccess) it.success else null }
+public fun <T, E> Flow<Result<T, E>>.filterSuccess(errorHandler: (E) -> Unit): Flow<T> = mapNotNull {
+    if (it.isFailure) {
+        errorHandler(it.failure)
+        null
+    } else
+        it.success
+}
 
 public suspend fun <T, E> Flow<Result<T, E>>.toResultList(destination: MutableList<T> = ArrayList()): Result<List<T>, E> =
     toResultCollection(destination)
