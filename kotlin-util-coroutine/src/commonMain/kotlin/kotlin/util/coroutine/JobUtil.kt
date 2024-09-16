@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.coroutine.util
+package io.github.goquati.kotlin.util.coroutine
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

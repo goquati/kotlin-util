@@ -1,14 +1,14 @@
 import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.coroutine.util.filterFailure
-import io.github.goquati.kotlin.coroutine.util.filterSuccess
+import io.github.goquati.kotlin.util.coroutine.filterFailure
+import io.github.goquati.kotlin.util.coroutine.filterSuccess
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
-import io.github.goquati.kotlin.coroutine.util.toResultList
-import io.github.goquati.kotlin.coroutine.util.toResultSet
+import io.github.goquati.kotlin.util.coroutine.toResultList
+import io.github.goquati.kotlin.util.coroutine.toResultSet
 import kotlinx.coroutines.flow.toList
 
 class ResultUtilTest {

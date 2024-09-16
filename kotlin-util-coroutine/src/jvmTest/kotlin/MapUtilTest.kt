@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.coroutine.util.getOrPutAsync
+import io.github.goquati.kotlin.util.coroutine.getOrPutAsync
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay

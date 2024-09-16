@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.coroutine.util.awaitAll
-import io.github.goquati.kotlin.coroutine.util.mapParallel
+import io.github.goquati.kotlin.util.coroutine.awaitAll
+import io.github.goquati.kotlin.util.coroutine.mapParallel
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.delay

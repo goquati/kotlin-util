@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.coroutine.util.loopCatching
+import io.github.goquati.kotlin.util.coroutine.loopCatching
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.coroutine.util
+package io.github.goquati.kotlin.util.coroutine
 
 import io.github.goquati.kotlin.util.associateByNotNull
 import io.github.goquati.kotlin.util.associateWithNotNull
