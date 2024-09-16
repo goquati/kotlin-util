@@ -36,7 +36,7 @@ public class AesEncryption(key: Key) {
         }
     }
 
-    public companion object {
+    private companion object {
         private const val ALGORITHM = "AES"
         private val charset = Charsets.UTF_8
     }

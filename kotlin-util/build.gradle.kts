@@ -1,25 +1,15 @@
-import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
-    kotlin("multiplatform") version "2.0.20"
-    id("org.jetbrains.kotlinx.kover") version "0.8.1"
+    kotlin("multiplatform")
     `maven-publish`
-    id("com.vanniktech.maven.publish") version "0.28.0"
-    id("org.jetbrains.dokka") version "1.9.20"
+    id("com.vanniktech.maven.publish")
 }
 
-val githubUser = "goquati"
-val githubProject = "kotlin-util"
 val artifactId = "kotlin-util"
-group = "io.github.$githubUser"
-version = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
+val descriptionStr = "Enhanced Kotlin util functions for simpler code"
 
 kotlin {
     jvm()
@@ -55,18 +45,6 @@ kotlin {
     }
 }
 
-kover {
-    reports {
-        verify {
-            CoverageUnit.values().forEach { covUnit ->
-                rule("minimal ${covUnit.name.lowercase()} coverage rate") {
-                    minBound(100, coverageUnits = covUnit)
-                }
-            }
-        }
-    }
-}
-
 mavenPublishing {
     coordinates(
         groupId = group as String,
@@ -75,25 +53,25 @@ mavenPublishing {
     )
     pom {
         name = artifactId
-        description = "Enhanced Kotlin util functions for simpler code"
-        url = "https://github.com/$githubUser/$githubProject"
+        description = descriptionStr
+        url = rootProject.extra["url"] as String
         licenses {
             license {
-                name = "MIT License"
-                url = "https://github.com/$githubUser/$githubProject/blob/main/LICENSE"
+                name = rootProject.extra["licenseName"] as String
+                url = rootProject.extra["licenseUrl"] as String
             }
         }
         developers {
             developer {
-                id = githubUser
-                name = githubUser
-                url = "https://github.com/$githubUser"
+                id = rootProject.extra["developerId"] as String
+                name = rootProject.extra["developerName"] as String
+                url = rootProject.extra["developerUrl"] as String
             }
         }
         scm {
-            url = "https://github.com/$githubUser/$githubProject"
-            connection = "scm:git:https://github.com/$githubUser/$githubProject.git"
-            developerConnection = "scm:git:git@github.com:$githubUser/$githubProject.git"
+            url = rootProject.extra["scmUrl"] as String
+            connection = rootProject.extra["scmConnection"] as String
+            developerConnection = rootProject.extra["scmDeveloperConnection"] as String
         }
     }
     publishToMavenCentral(
@@ -101,8 +79,4 @@ mavenPublishing {
         automaticRelease = true,
     )
     signAllPublications()
-}
-
-tasks.dokkaHtml.configure {
-    moduleVersion = version as String
 }
