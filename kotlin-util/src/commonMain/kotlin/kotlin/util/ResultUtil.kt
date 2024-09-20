@@ -72,6 +72,13 @@ public fun <T, E> Result<Result<T, E>, E>.flatten(): Result<T, E> = when {
 
 public fun <T> Iterable<Result<T, *>>.filterSuccess(): List<T> = filter { it.isSuccess }.map { it.success }
 public fun <E> Iterable<Result<*, E>>.filterFailure(): List<E> = filter { it.isFailure }.map { it.failure }
+public fun <T, E> Iterable<Result<T, E>>.filterSuccess(errorHandler: (E) -> Unit): List<T> = mapNotNull {
+    if (it.isFailure) {
+        errorHandler(it.failure)
+        null
+    } else
+        it.success
+}
 
 public fun <T, E> Iterable<Result<T, E>>.toResultList(): Result<List<T>, E> = toResultCollection(ArrayList())
 public fun <T, E> Iterable<Result<T, E>>.toResultSet(): Result<Set<T>, E> = toResultCollection(LinkedHashSet())
@@ -84,16 +91,21 @@ public fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCo
     return error?.let { Failure(it) } ?: Success(result)
 }
 
-public fun <T, E> Iterable<Result<T, E>>.toResultListOr(block: (Collection<E>) -> List<T>): List<T> =
-    toResultCollectionOr(ArrayList()) { block(it).toMutableList() }.toList()
+public inline fun <T, E> Iterable<Result<T, E>>.toResultListOr(block: (Collection<E>) -> List<T>): List<T> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return toResultCollectionOr(ArrayList()) { block(it).toMutableList() }.toList()
+}
 
-public fun <T, E> Iterable<Result<T, E>>.toResultSetOr(block: (Collection<E>) -> Set<T>): Set<T> =
-    toResultCollectionOr(LinkedHashSet()) { block(it).toMutableSet() }.toSet()
+public inline fun <T, E> Iterable<Result<T, E>>.toResultSetOr(block: (Collection<E>) -> Set<T>): Set<T> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return toResultCollectionOr(LinkedHashSet()) { block(it).toMutableSet() }.toSet()
+}
 
-public fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCollectionOr(
+public inline fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCollectionOr(
     destination: C,
     block: (Collection<E>) -> C,
 ): C {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     val errors = mutableListOf<E>()
     forEach {
         when {

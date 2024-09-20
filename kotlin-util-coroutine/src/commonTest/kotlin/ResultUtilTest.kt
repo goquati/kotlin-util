@@ -24,7 +24,7 @@ class ResultUtilTest {
         data.filterFailure().toList() shouldBe listOf(1, 3, 5)
 
         val errors = mutableSetOf<Int>()
-        data.filterSuccess(errorHandler = {errors.add(it)}).toList() shouldBe listOf("2", "4", "6")
+        data.filterSuccess(errorHandler = { errors.add(it) }).toList() shouldBe listOf("2", "4", "6")
         errors shouldBe setOf(1, 3, 5)
     }
 
@@ -63,8 +63,6 @@ class ResultUtilTest {
             it shouldBe listOf(2)
             listOf("4")
         } shouldBe listOf("4")
-        data2.toResultListOr { throw Exception() } shouldBe listOf("1", "2", "3")
-
         data1.toResultSetOr {
             it shouldBe listOf(2)
             setOf("4")

@@ -2,6 +2,8 @@ package io.github.goquati.kotlin.util.coroutine
 
 import io.github.goquati.kotlin.util.*
 import kotlinx.coroutines.flow.*
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 
 public fun <E> Flow<Result<*, E>>.filterFailure(): Flow<E> = mapNotNull { if (it.isFailure) it.failure else null }
@@ -29,27 +31,26 @@ public suspend fun <T, E, C : MutableCollection<in T>> Flow<Result<T, E>>.toResu
     return error?.let { Failure(it) } ?: Success(result)
 }
 
-public suspend fun <T, E> Flow<Result<T, E>>.toResultListOr(
+public suspend inline fun <T, E> Flow<Result<T, E>>.toResultListOr(
     destination: MutableList<T> = ArrayList(),
     block: (Collection<E>) -> List<T>,
-): List<T> = toResultCollectionOr(destination) { block(it).toMutableList() }
+): List<T> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return toResultCollectionOr(destination) { block(it).toMutableList() }
+}
 
-public suspend fun <T, E> Flow<Result<T, E>>.toResultSetOr(
+public suspend inline fun <T, E> Flow<Result<T, E>>.toResultSetOr(
     destination: MutableSet<T> = LinkedHashSet(),
     block: (Collection<E>) -> Set<T>,
-): Set<T> = toResultCollectionOr(destination) { block(it).toMutableSet() }
+): Set<T> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return toResultCollectionOr(destination) { block(it).toMutableSet() }
+}
 
-public suspend fun <T, E, C : MutableCollection<in T>> Flow<Result<T, E>>.toResultCollectionOr(
+public suspend inline fun <T, E, C : MutableCollection<in T>> Flow<Result<T, E>>.toResultCollectionOr(
     destination: C,
     block: (Collection<E>) -> C,
 ): C {
-    val errors = mutableListOf<E>()
-    collect {
-        when {
-            it.isFailure -> errors.add(it.failure)
-            else -> destination.add(it.success)
-        }
-    }
-    if (errors.isEmpty()) return destination
-    return block(errors)
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return toList().toResultCollectionOr(destination, block)
 }

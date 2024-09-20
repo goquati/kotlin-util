@@ -71,6 +71,10 @@ class ResultUtilTest {
         )
         data.filterSuccess() shouldBe listOf("2", "4", "6")
         data.filterFailure() shouldBe listOf(1, 3, 5)
+
+        val errors = mutableListOf<Int>()
+        data.filterSuccess { errors.add(it) } shouldBe listOf("2", "4", "6")
+        errors shouldBe listOf(1, 3, 5)
     }
 
     @Test
