@@ -1,49 +1,48 @@
-# kotlin-util
+# Kotlin Util Libraries
 
 ![GitHub License](https://img.shields.io/github/license/goquati/kotlin-util)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goquati/kotlin-util/check.yml)
 ![Static Badge](https://img.shields.io/badge/coverage-100%25-success)
 
-## Overview
+This repository hosts a collection of Kotlin utility libraries designed to simplify code development. The modules span across various functionalities, offering multiplatform support.
 
-Welcome to `kotlin-util`, a utility library for Kotlin that extends the standard library with additional functions to make working with collections more powerful and expressive. This library provides various extension functions for `Iterable`, `Sequence` and `Map` to enhance their functionality, especially focusing on handling nullability and performing common grouping and association tasks.
+## Subprojects
 
-## Features
+### 1. `kotlin-util`
+Enhanced Kotlin utility functions for streamlined coding.
 
-- **Distinct Elements Check**: Easily check if elements in a collection are distinct by a specified key.
-- **Non-Null Grouping**: Group elements by non-null keys and transform values with non-null results.
-- **Non-Null Association**: Create maps from collections by associating elements with non-null keys and values.
-- **Enhanced Map Operations**: Transform map keys and values with non-null results.
-- **Grouping Enhancements**: Find the maximum and minimum elements in groups based on a selector function.
+### 2. `kotlin-util-coroutine`
+Utility functions to facilitate working with Kotlin coroutines.
+
+### 3. `kotlin-util-csv`
+A type-safe CSV writing library with coroutine support.
+
+### 4. `kotlin-util-cache`
+Kotlin wrapper for the Caffeine caching library (JVM only).
+
+### 5. `kotlin-util-logging`
+SLF4J helper functions for Kotlin (JVM only).
 
 ## Installation
 
-Add the following dependency to your `build.gradle.kts` file:
+Each subproject is available as a separate dependency. Include the relevant ones in your `build.gradle.kts`:
 
 ```kotlin
-dependencies {
-    implementation("io.github.goquati:kotlin-util:$VERSION")
-}
+implementation("io.github.goquati:kotlin-util:$VERSION")
+implementation("io.github.goquati:kotlin-util-coroutine:$VERSION")
+implementation("io.github.goquati:kotlin-util-csv:$VERSION")
+// For JVM-only:
+implementation("io.github.goquati:kotlin-util-cache:$VERSION")
+implementation("io.github.goquati:kotlin-util-logging:$VERSION")
 ```
 
-## Usage
+## Documentation
 
-Here's a brief example demonstrating some of the provided functions:
+For more detailed documentation, visit the [official site](https://goquati.github.io/kotlin-util/).
 
-```kotlin
-val list = listOf(1, 2, 3, 4, 5, 6)
+## License
 
-val associated = list.associateNotNull { if (it % 2 == 0) it to it * 2 else null }
-println(associated)  // Output: {2=4, 4=8, 6=12}
-
-val grouped = list.groupByNotNull { if (it % 2 == 0) it else null }
-println(grouped)  // Output: {2=[2], 4=[4], 6=[6]}
-
-val isDistinct = list.isDistinctBy { it % 2 }
-println(isDistinct)  // Output: false
-
-// ...
-```
+This repository is licensed under the MIT License.
 
 ## Contributions
 
