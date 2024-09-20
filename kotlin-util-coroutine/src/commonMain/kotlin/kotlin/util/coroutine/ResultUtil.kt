@@ -1,8 +1,6 @@
 package io.github.goquati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Success
+import io.github.goquati.kotlin.util.*
 import kotlinx.coroutines.flow.*
 
 
@@ -29,4 +27,29 @@ public suspend fun <T, E, C : MutableCollection<in T>> Flow<Result<T, E>>.toResu
         !it.isFailure
     }.map { it.success }.toCollection(destination)
     return error?.let { Failure(it) } ?: Success(result)
+}
+
+public suspend fun <T, E> Flow<Result<T, E>>.toResultListOr(
+    destination: MutableList<T> = ArrayList(),
+    block: (Collection<E>) -> List<T>,
+): List<T> = toResultCollectionOr(destination) { block(it).toMutableList() }
+
+public suspend fun <T, E> Flow<Result<T, E>>.toResultSetOr(
+    destination: MutableSet<T> = LinkedHashSet(),
+    block: (Collection<E>) -> Set<T>,
+): Set<T> = toResultCollectionOr(destination) { block(it).toMutableSet() }
+
+public suspend fun <T, E, C : MutableCollection<in T>> Flow<Result<T, E>>.toResultCollectionOr(
+    destination: C,
+    block: (Collection<E>) -> C,
+): C {
+    val errors = mutableListOf<E>()
+    collect {
+        when {
+            it.isFailure -> errors.add(it.failure)
+            else -> destination.add(it.success)
+        }
+    }
+    if (errors.isEmpty()) return destination
+    return block(errors)
 }
