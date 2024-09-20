@@ -60,6 +60,11 @@ public inline fun <T, E1, E2> Result<T, E1>.mapError(block: (E1) -> E2): Result<
     }
 }
 
+public fun <T, E> kotlin.Result<T>.mapError(block: (Throwable) -> E): Result<T, E> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return Success(getOrElse { return Failure(block(it)) })
+}
+
 public fun <T, E> Result<Result<T, E>, E>.flatten(): Result<T, E> = when {
     isFailure -> asFailure
     else -> success

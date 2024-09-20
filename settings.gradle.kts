@@ -16,6 +16,8 @@ rootProject.name = "kotlin-util-base"
 
 include(
     "kotlin-util",
+    "kotlin-util-cache",
     "kotlin-util-coroutine",
     "kotlin-util-csv",
+    "kotlin-util-logging",
 )

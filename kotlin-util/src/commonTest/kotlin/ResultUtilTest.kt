@@ -1,4 +1,5 @@
 import io.github.goquati.kotlin.util.*
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -45,6 +46,10 @@ class ResultUtilTest {
     fun testMapError() {
         r1.mapError { 'r' }.failure shouldBe 'r'
         r2.mapError { 'r' }.success shouldBe "r2"
+
+        kotlin.Result.success('r').mapError { 47 }.success shouldBe 'r'
+        kotlin.Result.failure<NotImplementedError>(NotImplementedError("bar"))
+            .mapError { it.message }.failure shouldBe "bar"
     }
 
     @Test
