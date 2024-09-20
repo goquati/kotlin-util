@@ -6,6 +6,7 @@ import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.getOr
 import kotlinx.coroutines.*
+import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.future.future
 import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.future.asDeferred
@@ -16,10 +17,13 @@ import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.toJavaDuration
 
 public class Cache<K : Any, V : Any>(
+    private val defaultScope: CoroutineScope?,
     internal val cache: AsyncCache<K, V>,
 ) {
-    public suspend fun get(key: K, block: suspend (K) -> V): V {
-        val scope = CoroutineScope(coroutineContext)
+    private suspend fun getScope() = defaultScope ?: CoroutineScope(coroutineContext)
+
+    public suspend fun get(key: K, block: suspend CoroutineScope.(K) -> V): V {
+        val scope = getScope()
         return cache.get(key) { k, _ -> scope.future { block(k) } }.await()
     }
 
@@ -29,9 +33,9 @@ public class Cache<K : Any, V : Any>(
 
     public suspend fun <E> getCatching(
         key: K,
-        block: suspend (K) -> Result<V, E>,
+        block: suspend CoroutineScope.(K) -> Result<V, E>,
     ): Result<V, E> {
-        val scope = CoroutineScope(coroutineContext)
+        val scope = getScope()
         var error: E? = null
         val value = cache.get(key) { k, _ ->
             scope.future {
@@ -50,8 +54,11 @@ public class Cache<K : Any, V : Any>(
         return value
     }
 
-    public suspend fun put(key: K, block: suspend (K) -> V): V {
-        return CoroutineScope(coroutineContext).future { block(key) }
+    public suspend fun put(
+        key: K,
+        block: suspend CoroutineScope.(K) -> V,
+    ): V {
+        return getScope().future { block(key) }
             .also { cache.put(key, it) }
             .await()
     }
@@ -88,6 +95,15 @@ public class Cache<K : Any, V : Any>(
         private var evictionSizeBased: EvictionSizeBased<K, V>? = null
         private var evictionTimeBased: EvictionTimeBased<K, V>? = null
         private var removalListener: Listener<K, V>? = null
+        private var defaultScope: CoroutineScope? = null
+
+        public fun defaultScope(scope: CoroutineScope) {
+            defaultScope = scope
+        }
+
+        public fun defaultDispatcher(dispatcher: CoroutineDispatcher) {
+            defaultScope = CoroutineScope(dispatcher)
+        }
 
         public fun capacity(size: Int) {
             initialCapacity = size
@@ -152,7 +168,10 @@ public class Cache<K : Any, V : Any>(
             initialCapacity?.let { caffeine.initialCapacity(it) }
             removalListener?.let { caffeine.removalListener(it::notify) }
             ticker?.let { caffeine.ticker(it) }
-            return Cache(cache = caffeine.buildAsync())
+            return Cache(
+                defaultScope = defaultScope,
+                cache = caffeine.buildAsync(),
+            )
         }
 
         internal sealed interface EvictionSizeBased<K, V>

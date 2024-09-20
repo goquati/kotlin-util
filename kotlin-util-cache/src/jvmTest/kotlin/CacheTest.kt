@@ -11,6 +11,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.ContinuationInterceptor
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.nanoseconds
 
@@ -41,6 +42,92 @@ class CacheTest {
         cache.invalidateAll()
         cache.asMap() shouldBe mapOf()
         cache.asDeferredMap().mapValues { it.value.await() } shouldBe mapOf()
+    }
+
+    @Test
+    fun testDefaultDispatcher(): Unit = runBlocking {
+        val cache = cacheBuilder<String, Int> {
+            defaultDispatcher(Dispatchers.IO)
+        }
+
+        cache.get("get") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            1
+        } shouldBe 1
+
+        cache.getCatching("getCatching") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            Success(1)
+        }.success shouldBe 1
+
+        cache.put("put") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            1
+        } shouldBe 1
+    }
+
+    @Test
+    fun testDefaultScope(): Unit = runBlocking {
+        val cache = cacheBuilder<String, Int> {
+            defaultScope(CoroutineScope(Dispatchers.IO))
+        }
+
+        cache.get("get") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            1
+        } shouldBe 1
+
+        cache.getCatching("getCatching") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            Success(1)
+        }.success shouldBe 1
+
+        cache.put("put") {
+            coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+            1
+        } shouldBe 1
+    }
+
+    @Test
+    fun testCurrentScopeDefault(): Unit = runBlocking {
+        val cache = cacheBuilder<String, Int> {}
+        withContext(Dispatchers.Default) {
+            cache.get("get") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.Default
+                1
+            } shouldBe 1
+
+            cache.getCatching("getCatching") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.Default
+                Success(1)
+            }.success shouldBe 1
+
+            cache.put("put") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.Default
+                1
+            } shouldBe 1
+        }
+    }
+
+    @Test
+    fun testCurrentScopeIO(): Unit = runBlocking {
+        val cache = cacheBuilder<String, Int> {}
+        withContext(Dispatchers.IO) {
+            cache.get("get") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+                1
+            } shouldBe 1
+
+            cache.getCatching("getCatching") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+                Success(1)
+            }.success shouldBe 1
+
+            cache.put("put") {
+                coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
+                1
+            } shouldBe 1
+        }
     }
 
     @Test
