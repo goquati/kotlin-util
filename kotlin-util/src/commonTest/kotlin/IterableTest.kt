@@ -1,4 +1,6 @@
 import io.github.goquati.kotlin.util.*
+import io.kotest.assertions.throwables.shouldThrowExactly
+import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -128,6 +130,22 @@ class IterableTest {
             "banana" to 6,
             "orange" to 6,
         )
+    }
+
+    @Test
+    fun testMostFrequent() {
+        listOf(1, 2, 3, 4, 3, 6).mostFrequent() shouldBe 3
+        listOf(1, 2, 3, 4, 5, 6).mostFrequent() shouldBeIn listOf(1, 2, 3, 4, 5, 6)
+        shouldThrowExactly<NoSuchElementException> {
+            listOf<Int>().mostFrequent()
+        }
+    }
+
+    @Test
+    fun testMostFrequentOrNull() {
+        listOf(1, 2, 3, 4, 3, 6).mostFrequentOrNull() shouldBe 3
+        listOf(1, 2, 3, 4, 5, 6).mostFrequentOrNull() shouldBeIn listOf(1, 2, 3, 4, 5, 6)
+        listOf<Int>().mostFrequentOrNull() shouldBe null
     }
 }
 

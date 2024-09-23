@@ -45,3 +45,21 @@ public inline fun <T, V : Any> Iterable<T>.associateWithNotNull(
 ): Map<T, V> = mapNotNull {
     it to (valueSelector(it) ?: return@mapNotNull null)
 }.toMap()
+
+public fun <T> Iterable<T>.mostFrequent(): T {
+    val result = groupingBy { it }
+        .eachCount().entries
+    if (result.isEmpty()) throw NoSuchElementException()
+    return result.maxBy {
+        it.value
+    }.key
+}
+
+public fun <T> Iterable<T>.mostFrequentOrNull(): T? {
+    return groupingBy { it }
+        .eachCount()
+        .entries
+        .maxByOrNull {
+            it.value
+        }?.key
+}
