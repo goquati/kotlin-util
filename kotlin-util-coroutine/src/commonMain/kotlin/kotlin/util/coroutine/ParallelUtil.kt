@@ -10,6 +10,15 @@ public fun <T, R> Flow<T>.mapParallel(
     block: suspend (T) -> R,
 ): Flow<R> = flatMapMerge(concurrency = concurrency) { flow { emit(block(it)) } }
 
+public fun CoroutineScope.launchWorker(
+    nofWorkers: Int,
+    block: suspend CoroutineScope.(Int) -> Unit,
+): List<Job> = (0..<nofWorkers).map { launch { block(it) } }
+
+public fun <T> CoroutineScope.launchJobs(
+    nofWorkers: Int,
+    block: suspend CoroutineScope.(Int) -> T,
+): List<Deferred<T>> = (0..<nofWorkers).map { async { block(it) } }
 
 public suspend fun <R1, R2> awaitAll(
     f1: suspend CoroutineScope.() -> R1,
