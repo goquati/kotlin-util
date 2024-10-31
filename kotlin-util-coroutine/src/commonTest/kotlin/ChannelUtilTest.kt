@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.coroutine.toClosedChannel
+import io.github.goquati.kotlin.util.coroutine.toReceiveChannel
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.toList
 import kotlinx.coroutines.test.TestResult
@@ -7,8 +7,8 @@ import kotlin.test.Test
 
 class ChannelUtilTest {
     @Test
-    fun testToClosedChannel(): TestResult = runTest {
-        listOf(1,2,3,4).toClosedChannel().toList() shouldBe listOf(1,2,3,4)
-        sequenceOf(1, 2, 3, 4).asIterable().toClosedChannel().toList() shouldBe listOf(1,2,3,4)
+    fun testToReceiveChannel(): TestResult = runTest {
+        listOf(1,2,3,4).toReceiveChannel().toList() shouldBe listOf(1,2,3,4)
+        sequenceOf(1, 2, 3, 4).asIterable().toReceiveChannel().toList() shouldBe listOf(1,2,3,4)
     }
 }
