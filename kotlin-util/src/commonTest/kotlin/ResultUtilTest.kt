@@ -4,7 +4,7 @@ import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class ResultUtilTest {
-    data class Error(val msg: String)
+    data class Error(val msg: String): Throwable()
     companion object {
         val r1: Result<String, Error> = Failure(Error("r1"))
         val r2: Result<String, Error> = Success("r2")
@@ -26,6 +26,12 @@ class ResultUtilTest {
 
         r1.getFailureOr { Error("foobar1") } shouldBe Error("r1")
         r2.getFailureOr { Error("foobar2") } shouldBe Error("foobar2")
+    }
+
+    @Test
+    fun testGetOrThrow() {
+        shouldThrowExactly<Error> { r1.getOrThrow() }
+        r2.getOrThrow() shouldBe "r2"
     }
 
     @Test

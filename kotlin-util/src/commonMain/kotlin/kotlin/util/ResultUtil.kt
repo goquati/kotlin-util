@@ -28,6 +28,8 @@ public fun <E> Result<*, E>.getFailureOr(default: E): E = when {
     else -> default
 }
 
+public fun <T,E: Throwable> Result<T, E>.getOrThrow(): T = getOr { throw it }
+
 public inline fun <T, E> Result<T, E>.getFailureOr(block: (T) -> E): E {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when {
