@@ -1,20 +1,14 @@
 import io.github.goquati.kotlin.util.coroutine.loopCatching
-import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.test.TestResult
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
-data object JobFailedException : Exception() {
+private data object JobFailedException : Exception() {
     private fun readResolve(): Any = JobFailedException
 }
 
-class JobUtilTest {
+class JobUtilTestJvm {
 
     @Test
     fun testLoopCatching(): Unit = runBlocking {

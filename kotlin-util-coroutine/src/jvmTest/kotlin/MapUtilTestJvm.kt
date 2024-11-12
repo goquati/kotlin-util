@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.test.Test
 
-class MapUtilTest {
+class MapUtilTestJvm {
     @Test
     fun testGetOrPutAsync1(): TestResult = runTest {
         val data = ConcurrentHashMap<String, CompletableFuture<Int>>()

@@ -1,8 +1,8 @@
 package io.github.goquati.kotlin.util.coroutine
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 
 public fun CoroutineScope.loopCatching(
@@ -17,3 +17,12 @@ public fun CoroutineScope.loopCatching(
         }
     }
 }
+
+public fun <T> CoroutineScope.lazyAsync(
+    context: CoroutineContext = EmptyCoroutineContext,
+    block: suspend CoroutineScope.() -> T,
+): Deferred<T> = async(
+    context = context,
+    start = CoroutineStart.LAZY,
+    block = block,
+)
