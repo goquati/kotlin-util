@@ -13,15 +13,23 @@ import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
-private open class Foobar(removeProxyClass: Boolean) : QuatiLogger(removeProxyClass = removeProxyClass)
+data object FoobarStatic1 : QuatiLogger
+data object FoobarStatic2 : QuatiLogger {
+    override val quatiLoggerName: String = "Hello"
+}
+
+private open class Foobar(removeProxyClass: Boolean) : QuatiLogger {
+    override val quatiLoggerRemoveProxyClass: Boolean = removeProxyClass
+}
+
 private class `Foobar$$Proxy$$0` : Foobar(true)
 private class `FoobarWithProxy$$Proxy$$0` : Foobar(false)
 
 class QuatiLoggerTest {
     @Test
     fun testQuatiLogger() {
-        QuatiLogger().log.name shouldBe "io.github.goquati.kotlin.util.logging.QuatiLogger"
-        QuatiLogger("Hello").log.name shouldBe "Hello"
+        FoobarStatic1.log.name shouldBe "FoobarStatic1"
+        FoobarStatic2.log.name shouldBe "Hello"
         Foobar(true).log.name shouldBe "Foobar"
         Foobar(false).log.name shouldBe "Foobar"
         `Foobar$$Proxy$$0`().log.name shouldBe "Foobar"

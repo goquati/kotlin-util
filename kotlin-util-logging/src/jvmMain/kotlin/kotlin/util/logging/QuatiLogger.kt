@@ -7,17 +7,20 @@ import kotlin.contracts.contract
 import kotlin.time.TimeSource.Monotonic.markNow
 
 
-public open class QuatiLogger(name: String? = null, removeProxyClass: Boolean = true) {
-    public val log: Logger by lazy {
-        if (name != null)
-            return@lazy LoggerFactory.getLogger(name)
+public interface QuatiLogger {
+    public val quatiLoggerName: String? get() = null
+    public val quatiLoggerRemoveProxyClass: Boolean get() = true
+
+    public val log: Logger get() {
+        if (quatiLoggerName != null)
+            return LoggerFactory.getLogger(quatiLoggerName)
         val clazz = this::class.java.let {
-            if (removeProxyClass && it.simpleName.contains("$$"))
+            if (quatiLoggerRemoveProxyClass && it.simpleName.contains("$$"))
                 it.superclass
             else
                 it
         }
-        LoggerFactory.getLogger(clazz)
+        return LoggerFactory.getLogger(clazz)
     }
 }
 
