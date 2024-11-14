@@ -15,7 +15,7 @@ Enhanced Kotlin utility functions for streamlined coding.
 Utility functions to facilitate working with Kotlin coroutines.
 
 ### 3. `kotlin-util-csv`
-A type-safe CSV writing library with coroutine support.
+A type-safe CSV writing library with coroutine support. See [kotlin-util-csv/README.md](kotlin-util-csv/README.md)
 
 ### 4. `kotlin-util-cache`
 Kotlin wrapper for the Caffeine caching library (JVM only).
@@ -42,7 +42,7 @@ For more detailed documentation, visit the [official site](https://goquati.githu
 
 ## License
 
-This repository is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contributions
 
