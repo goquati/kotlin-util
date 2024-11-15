@@ -1,7 +1,9 @@
 package io.github.goquati.kotlin.util.coroutine
 
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 
 public suspend fun <T> Iterable<T>.toReceiveChannel(capacity: Int = Channel.UNLIMITED): ReceiveChannel<T> =
@@ -11,3 +13,28 @@ public suspend fun <T> Iterable<T>.toReceiveChannel(capacity: Int = Channel.UNLI
     }
 
 public suspend fun <T> Collection<T>.toReceiveChannel(): ReceiveChannel<T> = toReceiveChannel(capacity = size)
+
+public fun <T> ReceiveChannel<T>.toBatchedFlow(maxBatchSize: Int? = null): Flow<List<T>> = flow {
+    while (true) {
+        val batch = mutableListOf<T>()
+        try {
+            batch.add(this@toBatchedFlow.receive())
+        } catch (e: ClosedReceiveChannelException) {
+            return@flow
+        } catch (e: CancellationException) {
+            return@flow
+        }
+        for (i in 1..<(maxBatchSize ?: Int.MAX_VALUE)) {
+            var isChannelCurrentlyEmpty = false
+            this@toBatchedFlow.tryReceive()
+                .onSuccess { batch.add(it) }
+                .onFailure { isChannelCurrentlyEmpty = true }
+                .onClosed {
+                    this@flow.emit(batch)
+                    return@flow
+                }
+            if (isChannelCurrentlyEmpty) break
+        }
+        this@flow.emit(batch)
+    }
+}
