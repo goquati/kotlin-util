@@ -1,26 +1,49 @@
 package io.github.goquati.kotlin.util.logging
 
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.slf4j.LoggerFactory.getLogger
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.reflect.KClass
+import kotlin.reflect.full.companionObject
 import kotlin.time.TimeSource.Monotonic.markNow
 
 
+/**
+ * usage:
+ *
+ * ```kotlin
+ * class Foobar {
+ *    companion object : QuatiLogger.Base()
+ * }
+ * ```
+ *
+ * Alternative: use an interface to avoid using an abstract class:
+ *
+ * ```kotlin
+ * class Foobar {
+ *    companion object : QuatiLogger by QuatiLogger.create(Foobar::class)
+ * }
+ * ```
+ */
 public interface QuatiLogger {
-    public val quatiLoggerName: String? get() = null
-    public val quatiLoggerRemoveProxyClass: Boolean get() = true
+    public val log: Logger
 
-    public val log: Logger get() {
-        if (quatiLoggerName != null)
-            return LoggerFactory.getLogger(quatiLoggerName)
-        val clazz = this::class.java.let {
-            if (quatiLoggerRemoveProxyClass && it.simpleName.contains("$$"))
-                it.superclass
-            else
-                it
+    public abstract class Base : QuatiLogger {
+        override val log: Logger = getLogger(javaClass.classForLogging)
+    }
+
+    public companion object {
+        private val Class<*>.classForLogging
+            get(): Class<*> = enclosingClass?.takeIf { it.kotlin.companionObject?.java == this } ?: this
+
+        public fun create(clazz: KClass<*>): QuatiLogger = object : QuatiLogger {
+            override val log: Logger = getLogger(clazz.java.classForLogging)
         }
-        return LoggerFactory.getLogger(clazz)
+
+        public fun create(name: String): QuatiLogger = object : QuatiLogger {
+            override val log: Logger = getLogger(name)
+        }
     }
 }
 

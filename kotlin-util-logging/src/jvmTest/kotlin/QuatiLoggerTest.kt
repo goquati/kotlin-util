@@ -13,27 +13,31 @@ import kotlin.test.Test
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
-data object FoobarStatic1 : QuatiLogger
-data object FoobarStatic2 : QuatiLogger {
-    override val quatiLoggerName: String = "Hello"
+class Foobar0 : QuatiLogger.Base() {
+    class HelloWorld : QuatiLogger.Base()
 }
 
-private open class Foobar(removeProxyClass: Boolean) : QuatiLogger {
-    override val quatiLoggerRemoveProxyClass: Boolean = removeProxyClass
+class Foobar1 {
+    companion object : QuatiLogger.Base()
 }
 
-private class `Foobar$$Proxy$$0` : Foobar(true)
-private class `FoobarWithProxy$$Proxy$$0` : Foobar(false)
+class Foobar2 {
+    companion object : QuatiLogger by QuatiLogger.create(Foobar2::class)
+}
+
+class Foobar3 {
+    companion object : QuatiLogger by QuatiLogger.create("Hello")
+}
+
 
 class QuatiLoggerTest {
     @Test
     fun testQuatiLogger() {
-        FoobarStatic1.log.name shouldBe "FoobarStatic1"
-        FoobarStatic2.log.name shouldBe "Hello"
-        Foobar(true).log.name shouldBe "Foobar"
-        Foobar(false).log.name shouldBe "Foobar"
-        `Foobar$$Proxy$$0`().log.name shouldBe "Foobar"
-        `FoobarWithProxy$$Proxy$$0`().log.name shouldBe "FoobarWithProxy\$\$Proxy\$\$0"
+        Foobar0().log.name shouldBe "Foobar0"
+        Foobar0.HelloWorld().log.name shouldBe "Foobar0${'$'}HelloWorld"
+        Foobar1.log.name shouldBe "Foobar1"
+        Foobar2.log.name shouldBe "Foobar2"
+        Foobar3.log.name shouldBe "Hello"
     }
 
     @Test

@@ -21,6 +21,7 @@ kotlin {
             }
             dependencies {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")
+                implementation("org.jetbrains.kotlin:kotlin-reflect")
             }
         }
         val jvmTest by getting {

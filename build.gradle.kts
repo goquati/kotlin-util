@@ -46,7 +46,7 @@ subprojects {
 
     configurations.all {
         resolutionStrategy {
-            val kotlinxCoroutineVersion = rootProject.ext["kotlinxCoroutineVersion"]
+            val kotlinxCoroutineVersion: String by rootProject
             force("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutineVersion")
             force("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutineVersion")
             force("org.jetbrains.kotlinx:kotlinx-coroutines-bom:$kotlinxCoroutineVersion")
@@ -55,7 +55,7 @@ subprojects {
             force("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8-jvm:$kotlinxCoroutineVersion")
             force("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutineVersion")
 
-            val kotlinVersion = rootProject.ext["kotlinVersion"]
+            val kotlinVersion: String by rootProject
             force("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
             force("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
             force("org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion")
