@@ -14,6 +14,9 @@ class ResultTest {
 
     @Test
     fun testBasic() {
+        Result.success("hello").success shouldBe  "hello"
+        Result.failure(123).failure shouldBe 123
+
         r1.isFailure shouldBe true
         r2.isFailure shouldBe false
 

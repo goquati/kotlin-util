@@ -28,7 +28,13 @@ public fun <E> Result<*, E>.getFailureOr(default: E): E = when {
     else -> default
 }
 
-public fun <T,E: Throwable> Result<T, E>.getOrThrow(): T = getOr { throw it }
+public fun <T, E : Throwable> Result<T, E>.getOrThrow(): T = getOr { throw it }
+public fun <T, E : Throwable> Result<T, E>.toKotlin(): kotlin.Result<T> = when {
+    isFailure -> kotlin.Result.failure(failure)
+    else -> kotlin.Result.success(success)
+}
+
+public fun <T, E : Throwable> Iterable<Result<T, E>>.toKotlin(): List<kotlin.Result<T>> = map { it.toKotlin() }
 
 public inline fun <T, E> Result<T, E>.getFailureOr(block: (T) -> E): E {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
@@ -62,11 +68,6 @@ public inline fun <T, E1, E2> Result<T, E1>.mapError(block: (E1) -> E2): Result<
     }
 }
 
-public fun <T, E> kotlin.Result<T>.mapError(block: (Throwable) -> E): Result<T, E> {
-    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
-    return Success(getOrElse { return Failure(block(it)) })
-}
-
 public fun <T, E> Result<Result<T, E>, E>.flatten(): Result<T, E> = when {
     isFailure -> asFailure
     else -> success
@@ -74,13 +75,8 @@ public fun <T, E> Result<Result<T, E>, E>.flatten(): Result<T, E> = when {
 
 public fun <T> Iterable<Result<T, *>>.filterSuccess(): List<T> = filter { it.isSuccess }.map { it.success }
 public fun <E> Iterable<Result<*, E>>.filterFailure(): List<E> = filter { it.isFailure }.map { it.failure }
-public fun <T, E> Iterable<Result<T, E>>.filterSuccess(errorHandler: (E) -> Unit): List<T> = mapNotNull {
-    if (it.isFailure) {
-        errorHandler(it.failure)
-        null
-    } else
-        it.success
-}
+public fun <T, E, C : Iterable<Result<T, E>>> C.onEachFailure(block: (E) -> Unit): C =
+    onEach { if (it.isFailure) block(it.failure) }
 
 public fun <T, E> Iterable<Result<T, E>>.toResultList(): Result<List<T>, E> = toResultCollection(ArrayList())
 public fun <T, E> Iterable<Result<T, E>>.toResultSet(): Result<Set<T>, E> = toResultCollection(LinkedHashSet())
@@ -91,30 +87,4 @@ public fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCo
         !it.isFailure
     }.map { it.success }.toCollection(destination)
     return error?.let { Failure(it) } ?: Success(result)
-}
-
-public inline fun <T, E> Iterable<Result<T, E>>.toResultListOr(block: (Collection<E>) -> List<T>): List<T> {
-    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
-    return toResultCollectionOr(ArrayList()) { block(it).toMutableList() }.toList()
-}
-
-public inline fun <T, E> Iterable<Result<T, E>>.toResultSetOr(block: (Collection<E>) -> Set<T>): Set<T> {
-    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
-    return toResultCollectionOr(LinkedHashSet()) { block(it).toMutableSet() }.toSet()
-}
-
-public inline fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCollectionOr(
-    destination: C,
-    block: (Collection<E>) -> C,
-): C {
-    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
-    val errors = mutableListOf<E>()
-    forEach {
-        when {
-            it.isFailure -> errors.add(it.failure)
-            else -> destination.add(it.success)
-        }
-    }
-    if (errors.isEmpty()) return destination
-    return block(errors)
 }

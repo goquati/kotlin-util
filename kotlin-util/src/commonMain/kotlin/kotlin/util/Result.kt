@@ -57,5 +57,10 @@ public value class Result<out T, out E> internal constructor(
     internal value class Failure<out F>(val value: F) {
         override fun toString(): String = "Failure($value)"
     }
+
+    public companion object {
+        public fun <V> success(value: V): Result<V, Nothing> = Result(value)
+        public fun <E> failure(error: E): Result<Nothing, E> = Result(Result.Failure(error))
+    }
 }
 

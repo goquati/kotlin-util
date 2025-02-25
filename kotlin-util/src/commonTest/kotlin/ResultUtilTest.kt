@@ -35,6 +35,17 @@ class ResultUtilTest {
     }
 
     @Test
+    fun testToKotlin() {
+        r1.toKotlin() shouldBe kotlin.Result.failure(Error("r1"))
+        r2.toKotlin() shouldBe kotlin.Result.success("r2")
+
+        listOf(r1, r2).toKotlin() shouldBe listOf(
+            kotlin.Result.failure(Error("r1")),
+            kotlin.Result.success("r2"),
+        )
+    }
+
+    @Test
     fun testMap() {
         r1.map { 1 }.failure shouldBe Error("r1")
         r2.map { 2 }.success shouldBe 2
@@ -77,9 +88,20 @@ class ResultUtilTest {
         )
         data.filterSuccess() shouldBe listOf("2", "4", "6")
         data.filterFailure() shouldBe listOf(1, 3, 5)
+    }
 
+    @Test
+    fun testOnEachFailure() {
+        val data = listOf(
+            Failure(1),
+            Success("2"),
+            Failure(3),
+            Success("4"),
+            Failure(5),
+            Success("6"),
+        )
         val errors = mutableListOf<Int>()
-        data.filterSuccess { errors.add(it) } shouldBe listOf("2", "4", "6")
+        data.onEachFailure { errors.add(it) } shouldBe data
         errors shouldBe listOf(1, 3, 5)
     }
 
@@ -100,31 +122,5 @@ class ResultUtilTest {
 
         data1.toResultSet().failure shouldBe 2
         data2.toResultSet().success shouldBe setOf("1", "2", "3")
-    }
-
-    @Test
-    fun testToCollectionOr() {
-        val data1 = listOf(
-            Success("1"),
-            Failure(2),
-            Success("3"),
-        )
-        val data2 = listOf(
-            Success("1"),
-            Success("2"),
-            Success("3"),
-        )
-        data1.toResultListOr {
-            it shouldBe listOf(2)
-            listOf("4")
-        } shouldBe listOf("4")
-        data2.toResultListOr { throw Exception() } shouldBe listOf("1", "2", "3")
-
-        data1.toResultSetOr {
-            it shouldBe listOf(2)
-            setOf("4")
-        } shouldBe setOf("4")
-        data2.toResultListOr { throw Exception() } shouldBe listOf("1", "2", "3")
-        data2.toResultSetOr { throw Exception() } shouldBe setOf("1", "2", "3")
     }
 }
