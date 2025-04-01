@@ -53,12 +53,12 @@ class ResultKotlinUtilTest {
 
     @Test
     fun testMapError() {
-        r1.mapError { 'r' }.failure shouldBe 'r'
-        r2.mapError { 'r' }.success shouldBe "r2"
+        r1.mapError { 'r' }.failureOrNull shouldBe 'r'
+        r2.mapError { 'r' }.successOrNull shouldBe "r2"
 
-        Result.success('r').mapError { 47 }.success shouldBe 'r'
+        Result.success('r').mapError { 47 }.successOrNull shouldBe 'r'
         Result.failure<NotImplementedError>(NotImplementedError("bar"))
-            .mapError { it.message }.failure shouldBe "bar"
+            .mapError { it.message }.failureOrNull shouldBe "bar"
     }
 
     @Test

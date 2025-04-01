@@ -47,33 +47,33 @@ class ResultUtilTest {
 
     @Test
     fun testMap() {
-        r1.map { 1 }.failure shouldBe Error("r1")
-        r2.map { 2 }.success shouldBe 2
+        r1.map { 1 }.failureOrNull shouldBe Error("r1")
+        r2.map { 2 }.successOrNull shouldBe 2
     }
 
     @Test
     fun testFlatMap() {
-        r1.flatMap { Failure(Error("r1.2")) }.failure shouldBe Error("r1")
-        r1.flatMap { Success(1) }.failure shouldBe Error("r1")
-        r2.flatMap { Failure(Error("r2.2")) }.failure shouldBe Error("r2.2")
-        r2.flatMap { Success(2) }.success shouldBe 2
+        r1.flatMap { Failure(Error("r1.2")) }.failureOrNull shouldBe Error("r1")
+        r1.flatMap { Success(1) }.failureOrNull shouldBe Error("r1")
+        r2.flatMap { Failure(Error("r2.2")) }.failureOrNull shouldBe Error("r2.2")
+        r2.flatMap { Success(2) }.successOrNull shouldBe 2
     }
 
     @Test
     fun testMapError() {
-        r1.mapError { 'r' }.failure shouldBe 'r'
-        r2.mapError { 'r' }.success shouldBe "r2"
+        r1.mapError { 'r' }.failureOrNull shouldBe 'r'
+        r2.mapError { 'r' }.successOrNull shouldBe "r2"
 
-        kotlin.Result.success('r').mapError { 47 }.success shouldBe 'r'
+        kotlin.Result.success('r').mapError { 47 }.successOrNull shouldBe 'r'
         kotlin.Result.failure<NotImplementedError>(NotImplementedError("bar"))
-            .mapError { it.message }.failure shouldBe "bar"
+            .mapError { it.message }.failureOrNull shouldBe "bar"
     }
 
     @Test
     fun testFlatten() {
-        Success(r1).flatten().failure shouldBe Error("r1")
-        Success(r2).flatten().success shouldBe "r2"
-        (Failure(Error("r1")) as Result<Result<String, Error>, Error>).flatten().failure shouldBe Error("r1")
+        Success(r1).flatten().failureOrNull shouldBe Error("r1")
+        Success(r2).flatten().successOrNull shouldBe "r2"
+        (Failure(Error("r1")) as Result<Result<String, Error>, Error>).flatten().failureOrNull shouldBe Error("r1")
     }
 
     @Test
@@ -117,10 +117,10 @@ class ResultUtilTest {
             Success("2"),
             Success("3"),
         )
-        data1.toResultList().failure shouldBe 2
-        data2.toResultList().success shouldBe listOf("1", "2", "3")
+        data1.toResultList().failureOrNull shouldBe 2
+        data2.toResultList().successOrNull shouldBe listOf("1", "2", "3")
 
-        data1.toResultSet().failure shouldBe 2
-        data2.toResultSet().success shouldBe setOf("1", "2", "3")
+        data1.toResultSet().failureOrNull shouldBe 2
+        data2.toResultSet().successOrNull shouldBe setOf("1", "2", "3")
     }
 }

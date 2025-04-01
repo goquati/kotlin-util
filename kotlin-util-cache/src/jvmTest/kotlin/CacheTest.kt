@@ -58,7 +58,7 @@ class CacheTest {
         cache.getCatching("getCatching") {
             coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
             Success(1)
-        }.success shouldBe 1
+        }.successOrNull shouldBe 1
 
         cache.put("put") {
             coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
@@ -80,7 +80,7 @@ class CacheTest {
         cache.getCatching("getCatching") {
             coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
             Success(1)
-        }.success shouldBe 1
+        }.successOrNull shouldBe 1
 
         cache.put("put") {
             coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
@@ -100,7 +100,7 @@ class CacheTest {
             cache.getCatching("getCatching") {
                 coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.Default
                 Success(1)
-            }.success shouldBe 1
+            }.successOrNull shouldBe 1
 
             cache.put("put") {
                 coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.Default
@@ -121,7 +121,7 @@ class CacheTest {
             cache.getCatching("getCatching") {
                 coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO
                 Success(1)
-            }.success shouldBe 1
+            }.successOrNull shouldBe 1
 
             cache.put("put") {
                 coroutineContext[ContinuationInterceptor] shouldBe Dispatchers.IO

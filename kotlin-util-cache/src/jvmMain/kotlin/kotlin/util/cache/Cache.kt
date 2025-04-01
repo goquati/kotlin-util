@@ -6,7 +6,6 @@ import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.getOr
 import kotlinx.coroutines.*
-import kotlinx.coroutines.future.asCompletableFuture
 import kotlinx.coroutines.future.future
 import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.future.asDeferred

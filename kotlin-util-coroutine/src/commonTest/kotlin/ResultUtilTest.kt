@@ -51,10 +51,10 @@ class ResultUtilTest {
             Success("2"),
             Success("3"),
         )
-        data1.toResultList().failure shouldBe 2
-        data2.toResultList().success shouldBe listOf("1", "2", "3")
+        data1.toResultList().failureOrNull shouldBe 2
+        data2.toResultList().successOrNull shouldBe listOf("1", "2", "3")
 
-        data1.toResultSet().failure shouldBe 2
-        data2.toResultSet().success shouldBe setOf("1", "2", "3")
+        data1.toResultSet().failureOrNull shouldBe 2
+        data2.toResultSet().successOrNull shouldBe setOf("1", "2", "3")
     }
 }

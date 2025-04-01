@@ -73,6 +73,14 @@ subprojects {
 
     kover {
         reports {
+            filters {
+                excludes {
+                    classes(
+                        "io.github.goquati.kotlin.util.Success",
+                        "io.github.goquati.kotlin.util.Failure",
+                    )
+                }
+            }
             verify {
                 CoverageUnit.values().forEach { covUnit ->
                     rule("minimal ${covUnit.name.lowercase()} coverage rate") {

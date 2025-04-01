@@ -1,8 +1,8 @@
 import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
-import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import kotlin.test.Test
 
 class ResultTest {
@@ -14,8 +14,8 @@ class ResultTest {
 
     @Test
     fun testBasic() {
-        Result.success("hello").success shouldBe  "hello"
-        Result.failure(123).failure shouldBe 123
+        Success("hello").successOrNull shouldBe  "hello"
+        Failure(123).failure shouldBe 123
 
         r1.isFailure shouldBe true
         r2.isFailure shouldBe false
@@ -29,13 +29,10 @@ class ResultTest {
         r1.successOrNull shouldBe null
         r2.successOrNull shouldBe "r2"
 
-        r1.asFailure shouldBe r1
-        shouldThrowExactly<IllegalStateException> { r2.asFailure }
-
-        shouldThrowExactly<IllegalStateException> { r1.asSuccess }
-        r2.asSuccess shouldBe r2
-
         r1.toString() shouldBe "Failure(Error(msg=r1))"
+        (r1 as Failure).toString() shouldBe "Failure(Error(msg=r1))"
+
         r2.toString() shouldBe "Success(r2)"
+        (r2 as Success).toString() shouldBe "Success(r2)"
     }
 }
