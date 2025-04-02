@@ -3,6 +3,21 @@ package io.github.goquati.kotlin.util
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+public fun <T, E> Result<T, E>.isSuccess(): Boolean {
+    contract {
+        this.returns(true) implies (this@isSuccess is Success<T>)
+        this.returns(false) implies (this@isSuccess is Failure<E>)
+    }
+    return this is Success<*>
+}
+
+public fun <T, E> Result<T, E>.isFailure(): Boolean {
+    contract {
+        this.returns(false) implies (this@isFailure is Success<T>)
+        this.returns(true) implies (this@isFailure is Failure<E>)
+    }
+    return this is Failure<*>
+}
 
 public fun <T> Result<T, *>.getOr(default: T): T = when (this) {
     is Failure -> default
@@ -79,10 +94,13 @@ public fun <T, E> Iterable<Result<T, E>>.toResultSet(): Result<Set<T>, E> = toRe
 public fun <T, E, C : MutableCollection<in T>> Iterable<Result<T, E>>.toResultCollection(destination: C): Result<C, E> {
     var error: E? = null
     val result = takeWhile {
-        if (it is Failure) {
-            error = it.failure
-            false
-        } else true
+        when (it) {
+            is Failure -> {
+                error = it.failure
+                false
+            }
+            is Success -> true
+        }
     }.map { (it as Success).value }.toCollection(destination)
     return error?.let { Failure(it) } ?: Success(result)
 }

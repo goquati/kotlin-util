@@ -1,8 +1,9 @@
 import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
+import io.github.goquati.kotlin.util.isFailure
+import io.github.goquati.kotlin.util.isSuccess
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import kotlin.test.Test
 
 class ResultTest {
@@ -17,11 +18,11 @@ class ResultTest {
         Success("hello").successOrNull shouldBe  "hello"
         Failure(123).failure shouldBe 123
 
-        r1.isFailure shouldBe true
-        r2.isFailure shouldBe false
+        r1.isFailure() shouldBe true
+        r2.isFailure() shouldBe false
 
-        r1.isSuccess shouldBe false
-        r2.isSuccess shouldBe true
+        r1.isSuccess() shouldBe false
+        r2.isSuccess() shouldBe true
 
         r1.failureOrNull shouldBe Error("r1")
         r2.failureOrNull shouldBe null
@@ -34,5 +35,20 @@ class ResultTest {
 
         r2.toString() shouldBe "Success(r2)"
         (r2 as Success).toString() shouldBe "Success(r2)"
+    }
+
+    @Test
+    fun testSmartCast() {
+        if (r1.isSuccess()) error("error")
+        else r1.failure shouldBe Error("r1")
+
+        if (r1.isFailure()) r1.failure shouldBe Error("r1")
+        else error("error")
+
+        if (r2.isSuccess()) r2.value shouldBe "r2"
+        else error("error")
+
+        if (r2.isFailure()) error("error")
+        else r2.value shouldBe "r2"
     }
 }
