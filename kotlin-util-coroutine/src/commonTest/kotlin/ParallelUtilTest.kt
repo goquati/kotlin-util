@@ -1,9 +1,11 @@
+import io.github.goquati.kotlin.util.coroutine.CoalescingTaskRunner
 import io.github.goquati.kotlin.util.coroutine.awaitAll
 import io.github.goquati.kotlin.util.coroutine.launchJobs
 import io.github.goquati.kotlin.util.coroutine.launchWorker
 import io.github.goquati.kotlin.util.coroutine.mapParallel
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,15 +15,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import kotlin.test.Test
 
 
 class ParallelUtilTest {
     @Test
     fun testMapParallel(): TestResult = runTest {
-        flowOf(1, 2, 3, 4).mapParallel { delay(0); "$it" }
+        flowOf(1, 2, 3, 4).mapParallel { yield(); "$it" }
             .toList() shouldContainExactlyInAnyOrder listOf("1", "2", "3", "4")
-        flowOf(1, 2, 3, 4).mapParallel(concurrency = 2) { delay(0); "$it" }
+        flowOf(1, 2, 3, 4).mapParallel(concurrency = 2) { yield(); "$it" }
             .toList() shouldContainExactlyInAnyOrder listOf("1", "2", "3", "4")
     }
 
@@ -44,13 +48,60 @@ class ParallelUtilTest {
     @Test
     fun testAwaitAll(): TestResult = runTest {
         awaitAll(
-            { delay(0); 47 },
-            { delay(0); "foobar" },
+            { yield(); 47 },
+            { yield(); "foobar" },
         ) shouldBe Pair(47, "foobar")
         awaitAll(
-            { delay(0); 47 },
-            { delay(0); "foobar" },
-            { delay(0); true },
+            { yield(); 47 },
+            { yield(); "foobar" },
+            { yield(); true },
         ) shouldBe Triple(47, "foobar", true)
+    }
+
+    @Test
+    fun testCoalescingTaskRunner(): TestResult = runTest {
+        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
+            var count = 0
+            CoalescingTaskRunner {
+                count++
+                delay(100)
+            }.use { runner ->
+                repeat(10) {
+                    runner.schedule()
+                    delay(3)
+                }
+                delay(400)
+                count shouldBe 2
+                runner.schedule()
+            }
+            count shouldBe 3
+        }
+    }
+
+    private object TestException : Exception()
+
+    @Test
+    fun testCoalescingTaskRunnerErrorHandler(): TestResult = runTest {
+        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
+            var count = 0
+            CoalescingTaskRunner(
+                errorHandler = {
+                    count++
+                    it shouldBe TestException
+                },
+            ) {
+                delay(100)
+                throw TestException
+            }.use { runner ->
+                repeat(10) {
+                    runner.schedule()
+                    delay(3)
+                }
+                delay(400)
+                count shouldBe 2
+                runner.schedule()
+            }
+            count shouldBe 3
+        }
     }
 }
