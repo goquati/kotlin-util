@@ -1,5 +1,7 @@
 import io.github.goquati.kotlin.util.eachMaxBy
+import io.github.goquati.kotlin.util.eachMaxOf
 import io.github.goquati.kotlin.util.eachMinBy
+import io.github.goquati.kotlin.util.eachMinOf
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -35,6 +37,40 @@ class GroupingTest {
                     'a' to "avocado",
                     'b' to "banana",
                     'c' to "cranberry",
+                )
+    }
+
+    @Test
+    fun testEachMinOf() {
+        listOf<String>()
+            .groupingBy { it[0] }
+            .eachMinOf { it.length } shouldBe
+                emptyMap()
+
+        listOf("apple", "banana", "cranberry", "avocado", "cherry")
+            .groupingBy { it[0] }
+            .eachMinOf { it.length } shouldBe
+                mapOf(
+                    'a' to 5,
+                    'b' to 6,
+                    'c' to 6,
+                )
+    }
+
+    @Test
+    fun testEachMaxOf() {
+        listOf<String>()
+            .groupingBy { it[0] }
+            .eachMaxOf { it.length } shouldBe
+                emptyMap()
+
+        listOf("apple", "banana", "cranberry", "avocado", "cherry")
+            .groupingBy { it[0] }
+            .eachMaxOf { it.length } shouldBe
+                mapOf(
+                    'a' to 7,
+                    'b' to 6,
+                    'c' to 9,
                 )
     }
 }
