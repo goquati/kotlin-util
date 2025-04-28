@@ -16,3 +16,6 @@ public value class Success<T> public constructor(public val value: T) : Result<T
 public value class Failure<E> public constructor(public val failure: E) : Result<Nothing, E> {
     override fun toString(): String = "Failure($failure)"
 }
+
+public val <T> T.failure: Failure<T> get() = Failure(this)
+public val <T> T.success: Success<T> get() = Success(this)
