@@ -72,9 +72,9 @@ public suspend fun <R1, R2, R3> awaitAll(
  * runner.close()
  * ```
  *
- * @param context The coroutine context used for the internal task runner.
- * @param errorHandler A callback invoked when [task] throws an exception.
- * @param task The suspending function to be executed with coalescing behavior.
+ * @param context Coroutine context to run the task (defaults to [Dispatchers.Default]).
+ * @param errorHandler Optional callback for handling exceptions thrown by the task.
+ * @param task The suspending function to execute. Only one instance runs at a time.
  */
 public class CoalescingTaskRunner(
     context: CoroutineContext = Dispatchers.Default,
@@ -107,6 +107,71 @@ public class CoalescingTaskRunner(
     }
 
     public suspend fun <T> use(block: suspend (CoalescingTaskRunner) -> T): T = try {
+        block(this)
+    } finally {
+        close()
+    }
+}
+
+/**
+ * A coroutine-based utility that coalesces multiple invocations of a suspending task
+ * and ensures only the latest scheduled invocation is executed, returning its result.
+ *
+ * This is useful in scenarios where a task may be triggered frequently (e.g., UI events,
+ * network polling), but only the most recent execution and its result are relevant.
+ *
+ * Example use case: auto-refreshing data on user input where intermediate results can be discarded.
+ *
+ * The task is executed on a dedicated coroutine scope with optional error handling.
+ * If a task is currently running and a new one is scheduled, the new task supersedes
+ * previous pending triggers but waits for its result.
+ *
+ * @param context Coroutine context to run the task (defaults to [Dispatchers.Default]).
+ * @param task The suspending function to execute. Only one instance runs at a time.
+ * @param T The result type of the task.
+ */
+public class CoalescingTaskRunnerWithResult<T>(
+    context: CoroutineContext = Dispatchers.Default,
+    private val task: suspend () -> T,
+) {
+    private data class State<T>(
+        val idRunning: Long?,
+        val idLatest: Long,
+        val value: T?,
+    )
+
+    private val result = MutableStateFlow<State<T>>(State(idRunning = null, idLatest = -1, value = null))
+    private val scope: CoroutineScope = CoroutineScope(context + SupervisorJob())
+    private val triggerChannel = Channel<Unit>(
+        capacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
+    private val runner = scope.launch {
+        triggerChannel.consumeAsFlow().collect {
+            val state = result.first()
+            val idRunning = state.idLatest + 1
+            result.value = state.copy(idRunning = idRunning)
+            val value = task()
+            result.value = State(idRunning = null, idLatest = idRunning, value = value)
+        }
+    }
+
+    public suspend fun schedule(): T {
+        val latestId = result.first().let { it.idRunning ?: it.idLatest }
+        triggerChannel.send(Unit)
+        return result.first { it.idLatest > latestId }.let {
+            @Suppress("UNCHECKED_CAST")
+            it.value as T
+        }
+    }
+
+    public suspend fun close() {
+        triggerChannel.close()
+        runner.join()
+        scope.cancel()
+    }
+
+    public suspend fun <R> use(block: suspend (CoalescingTaskRunnerWithResult<T>) -> R): R = try {
         block(this)
     } finally {
         close()

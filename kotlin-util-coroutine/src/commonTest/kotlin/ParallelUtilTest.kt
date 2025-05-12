@@ -1,4 +1,5 @@
 import io.github.goquati.kotlin.util.coroutine.CoalescingTaskRunner
+import io.github.goquati.kotlin.util.coroutine.CoalescingTaskRunnerWithResult
 import io.github.goquati.kotlin.util.coroutine.awaitAll
 import io.github.goquati.kotlin.util.coroutine.launchJobs
 import io.github.goquati.kotlin.util.coroutine.launchWorker
@@ -6,6 +7,7 @@ import io.github.goquati.kotlin.util.coroutine.mapParallel
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -101,6 +103,30 @@ class ParallelUtilTest {
                 count shouldBe 2
                 runner.schedule()
             }
+            count shouldBe 3
+        }
+    }
+
+
+    @Test
+    fun testCoalescingTaskRunnerWithResult(): TestResult = runTest {
+        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
+            var count = 0
+            val result = CoalescingTaskRunnerWithResult {
+                delay(100)
+                count++
+            }.use { runner ->
+                val results = (0..<10).map {
+                    delay(3)
+                    async {
+                        runner.schedule()
+                    }
+                }.awaitAll()
+                results.toSet() shouldBe setOf(0, 1)
+                count shouldBe 2
+                runner.schedule()
+            }
+            result shouldBe 2
             count shouldBe 3
         }
     }
