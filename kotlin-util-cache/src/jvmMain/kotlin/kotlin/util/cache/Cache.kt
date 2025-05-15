@@ -18,19 +18,19 @@ import kotlin.time.toJavaDuration
 public class Cache<K : Any, V : Any>(
     private val defaultScope: CoroutineScope?,
     internal val cache: AsyncCache<K, V>,
-) {
+) : ICache<K, V> {
     private suspend fun getScope() = defaultScope ?: CoroutineScope(coroutineContext)
 
-    public suspend fun get(key: K, block: suspend CoroutineScope.(K) -> V): V {
+    public override suspend fun get(key: K, block: suspend CoroutineScope.(K) -> V): V {
         val scope = getScope()
         return cache.get(key) { k, _ -> scope.future { block(k) } }.await()
     }
 
-    public suspend fun getIfPresent(key: K): V? {
+    public override suspend fun getIfPresent(key: K): V? {
         return cache.getIfPresent(key)?.await()
     }
 
-    public suspend fun <E> getCatching(
+    public override suspend fun <E> getCatching(
         key: K,
         block: suspend CoroutineScope.(K) -> Result<V, E>,
     ): Result<V, E> {
@@ -48,12 +48,12 @@ public class Cache<K : Any, V : Any>(
         return Success(value!!)
     }
 
-    public fun put(key: K, value: V): V {
+    public override fun put(key: K, value: V): V {
         cache.synchronous().put(key, value)
         return value
     }
 
-    public suspend fun put(
+    public override suspend fun put(
         key: K,
         block: suspend CoroutineScope.(K) -> V,
     ): V {
@@ -62,19 +62,19 @@ public class Cache<K : Any, V : Any>(
             .await()
     }
 
-    public fun invalidate(key: K) {
+    public override fun invalidate(key: K) {
         cache.synchronous().invalidate(key)
     }
 
-    public fun invalidateAll() {
+    public override fun invalidateAll() {
         cache.synchronous().invalidateAll()
     }
 
-    public suspend fun asMap(): Map<K, V> {
+    public override suspend fun asMap(): Map<K, V> {
         return cache.asMap().mapValues { it.value.await() }
     }
 
-    public fun asDeferredMap(): Map<K, Deferred<V>> {
+    public override fun asDeferredMap(): Map<K, Deferred<V>> {
         return cache.asMap().mapValues { it.value.asDeferred() }
     }
 

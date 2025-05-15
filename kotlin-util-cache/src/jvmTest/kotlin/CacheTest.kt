@@ -40,8 +40,8 @@ class CacheTest {
         cache.invalidate("getFun")
         cache.asMap() shouldBe mapOf("putValue" to 470, "putFun" to 40, "getFunCatching" to 7)
         cache.invalidateAll()
-        cache.asMap() shouldBe mapOf()
-        cache.asDeferredMap().mapValues { it.value.await() } shouldBe mapOf()
+        cache.asMap() shouldBe emptyMap()
+        cache.asDeferredMap().mapValues { it.value.await() } shouldBe emptyMap()
     }
 
     @Test
@@ -144,7 +144,7 @@ class CacheTest {
         cache.getIfPresent("foo") shouldBe null
         cache.put("foo", 3) shouldBe 3
         time += 11L
-        cache.asMap() shouldBe mapOf()
+        cache.asMap() shouldBe emptyMap()
     }
 
     @Test
@@ -164,7 +164,7 @@ class CacheTest {
         cache.put("foo", 1) shouldBe 1
         time += 11L
         cache.getIfPresent("foo") shouldBe null
-        cache.asMap() shouldBe mapOf()
+        cache.asMap() shouldBe emptyMap()
     }
 
 
