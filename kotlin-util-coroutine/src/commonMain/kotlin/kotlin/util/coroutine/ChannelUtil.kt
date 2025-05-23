@@ -5,6 +5,15 @@ import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+context(scope: ProducerScope<T>)
+public suspend fun <T> Iterable<T>.sendAll() {
+    forEach { scope.send(it) }
+}
+
+context(scope: ProducerScope<T>)
+public suspend fun <T> Flow<T>.sendAll() {
+    collect { scope.send(it) }
+}
 
 public suspend fun <T> Iterable<T>.toReceiveChannel(capacity: Int = Channel.UNLIMITED): ReceiveChannel<T> =
     Channel<T>(capacity = capacity).apply {

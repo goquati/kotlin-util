@@ -54,3 +54,13 @@ public suspend inline fun <T, K : Any, V : Any> Flow<T>.groupByNotNull(
     keySelector: (T) -> K?,
     valueTransform: (T) -> V?,
 ): Map<K, List<V>> = toList().groupByNotNull(keySelector, valueTransform)
+
+context(collector: FlowCollector<T>)
+public suspend fun <T> Iterable<T>.emitAll() {
+    forEach { collector.emit(it) }
+}
+
+context(collector: FlowCollector<T>)
+public suspend fun <T> Flow<T>.emitAll() {
+    collector.emitAll(this)
+}

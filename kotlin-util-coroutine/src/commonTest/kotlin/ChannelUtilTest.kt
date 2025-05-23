@@ -1,3 +1,4 @@
+import io.github.goquati.kotlin.util.coroutine.sendAll
 import io.github.goquati.kotlin.util.coroutine.toBatchedFlow
 import io.github.goquati.kotlin.util.coroutine.toReceiveChannel
 import io.kotest.matchers.shouldBe
@@ -8,6 +9,12 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 
 class ChannelUtilTest {
+    @Test
+    fun testSendAll(): TestResult = runTest {
+        channelFlow { listOf(1, 2, 3).sendAll() }.toList() shouldBe listOf(1, 2, 3)
+        channelFlow { flowOf(1, 2, 3).sendAll() }.toList() shouldBe listOf(1, 2, 3)
+    }
+
     @Test
     fun testToReceiveChannel(): TestResult = runTest {
         listOf(1, 2, 3, 4).toReceiveChannel().toList() shouldBe listOf(1, 2, 3, 4)

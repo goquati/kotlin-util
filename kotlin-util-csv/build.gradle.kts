@@ -25,8 +25,8 @@ kotlin {
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
             compilerOptions {
                 allWarningsAsErrors = true
-                apiVersion.set(KotlinVersion.KOTLIN_2_0)
-                languageVersion.set(KotlinVersion.KOTLIN_2_0)
+                apiVersion.set(KotlinVersion.KOTLIN_2_2)
+                languageVersion.set(KotlinVersion.KOTLIN_2_2)
             }
             dependencies {
                 val kotlinxCoroutineVersion: String by rootProject.extra

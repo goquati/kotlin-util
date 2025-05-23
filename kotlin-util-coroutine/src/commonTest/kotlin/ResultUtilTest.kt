@@ -1,6 +1,8 @@
 import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.coroutine.*
+import io.github.goquati.kotlin.util.failureOrNull
+import io.github.goquati.kotlin.util.successOrNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestResult

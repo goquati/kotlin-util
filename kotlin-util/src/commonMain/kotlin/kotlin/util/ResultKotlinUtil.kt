@@ -18,7 +18,7 @@ public fun <T> Result<Result<T>>.flatten(): Result<T> = getOrElse { return Resul
 public fun <T> Iterable<Result<T>>.filterSuccess(): List<T> = filter { it.isSuccess }.map { it.getOrThrow() }
 public fun Iterable<Result<*>>.filterFailure(): List<Throwable> = mapNotNull { it.exceptionOrNull() }
 
-public fun <T> Iterable<Result<T>>.onEachFailure(block: (Throwable) -> Unit) =
+public fun <T> Iterable<Result<T>>.onEachFailure(block: (Throwable) -> Unit): Iterable<Result<T>> =
     onEach { it.exceptionOrNull()?.let(block) }
 
 public fun <T> Iterable<Result<T>>.toResultList(): Result<List<T>> = toResultCollection(ArrayList())

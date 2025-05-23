@@ -16,8 +16,8 @@ kotlin {
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
             compilerOptions {
                 allWarningsAsErrors = true
-                apiVersion.set(KotlinVersion.KOTLIN_2_0)
-                languageVersion.set(KotlinVersion.KOTLIN_2_0)
+                apiVersion.set(KotlinVersion.KOTLIN_2_2)
+                languageVersion.set(KotlinVersion.KOTLIN_2_2)
             }
             dependencies {
                 implementation("org.slf4j:slf4j-api:$slf4jVersion")

@@ -2,9 +2,11 @@ import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.failure
+import io.github.goquati.kotlin.util.failureOrNull
 import io.github.goquati.kotlin.util.isFailure
 import io.github.goquati.kotlin.util.isSuccess
 import io.github.goquati.kotlin.util.success
+import io.github.goquati.kotlin.util.successOrNull
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -17,10 +19,10 @@ class ResultTest {
 
     @Test
     fun testBasic() {
-        Success("hello").successOrNull shouldBe  "hello"
+        Success("hello").successOrNull shouldBe "hello"
         Failure(123).failureOrNull shouldBe 123
 
-        "hello".success.successOrNull shouldBe  "hello"
+        "hello".success.successOrNull shouldBe "hello"
         123.failure.failureOrNull shouldBe 123
 
         r1.isFailure() shouldBe true

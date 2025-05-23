@@ -9,6 +9,12 @@ import kotlin.test.Test
 
 class FlowUtilTest {
     @Test
+    fun testEmitAll(): TestResult = runTest {
+        flow { listOf(1, 2, 3).emitAll() }.toList() shouldBe listOf(1, 2, 3)
+        flow { flowOf(1, 2, 3).emitAll() }.toList() shouldBe listOf(1, 2, 3)
+    }
+
+    @Test
     fun testIsEmpty(): TestResult = runTest {
         flowOf<Int>().isEmpty() shouldBe true
         flow {
