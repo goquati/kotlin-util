@@ -22,6 +22,7 @@ enum class SupProjects(val projectName: String) {
     KOTLIN_UTIL("kotlin-util"),
     KOTLIN_UTIL_CACHE("kotlin-util-cache"),
     KOTLIN_UTIL_COROUTINE("kotlin-util-coroutine"),
+    KOTLIN_UTIL_CRYPTO("kotlin-util-crypto"),
     KOTLIN_UTIL_CSV("kotlin-util-csv"),
     KOTLIN_UTIL_LOGGING("kotlin-util-logging"),
 }
@@ -96,6 +97,7 @@ subprojects {
         SupProjects.KOTLIN_UTIL -> "Enhanced Kotlin util functions for simpler code."
         SupProjects.KOTLIN_UTIL_CACHE -> "A Kotlin wrapper for the Caffeine caching library, designed to support asynchronous operations and coroutines, ensuring efficient and non-blocking cache management."
         SupProjects.KOTLIN_UTIL_COROUTINE -> "Enhanced Kotlin coroutine util functions for simpler code."
+        SupProjects.KOTLIN_UTIL_CRYPTO -> "A Kotlin library for crypto util such as hashing functions"
         SupProjects.KOTLIN_UTIL_CSV -> "A Kotlin library for type-safe CSV writing with coroutine support."
         SupProjects.KOTLIN_UTIL_LOGGING -> "Provides convenient helper functions to streamline SLF4J logging in Kotlin, improving logging practices with less boilerplate."
     }

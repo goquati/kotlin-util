@@ -18,6 +18,7 @@ include(
     "kotlin-util",
     "kotlin-util-cache",
     "kotlin-util-coroutine",
+    "kotlin-util-crypto",
     "kotlin-util-csv",
     "kotlin-util-logging",
 )
