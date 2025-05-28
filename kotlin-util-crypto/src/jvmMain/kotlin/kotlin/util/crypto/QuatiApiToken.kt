@@ -6,7 +6,6 @@ import kotlin.uuid.Uuid
 import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Failure
 import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed.Companion.infoEncoder
 
 public interface QuatiApiTokenHash {
     public val value: String
@@ -27,14 +26,6 @@ public interface QuatiApiToken {
 }
 
 @OptIn(ExperimentalUuidApi::class)
-public val QuatiApiTokenParsed.token: QuatiApiToken
-    get() {
-        val infoEncoded = infoEncoder.encode(info.toByteArray())
-        val token = "${product}_${version}_${env}_${id.toHexString()}_${secret.toHexString()}_$infoEncoded"
-        return QuatiApiToken.Simple(token)
-    }
-
-@OptIn(ExperimentalUuidApi::class)
 public interface QuatiApiTokenParsed {
     public val product: String
     public val version: String
@@ -42,6 +33,7 @@ public interface QuatiApiTokenParsed {
     public val id: Uuid
     public val secret: Uuid
     public val info: String
+    public val token: QuatiApiToken
 
     @OptIn(ExperimentalUuidApi::class)
     public data class Simple(
@@ -51,10 +43,19 @@ public interface QuatiApiTokenParsed {
         override val id: Uuid = Uuid.random(),
         override val secret: Uuid = Uuid.random(),
         override val info: String,
-    ) : QuatiApiTokenParsed
+    ) : QuatiApiTokenParsed {
+        override val token: QuatiApiToken.Simple get() = simpleToken
+    }
 
     public companion object {
-        internal val infoEncoder = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+        private val infoEncoder = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+
+        public val QuatiApiTokenParsed.simpleToken: QuatiApiToken.Simple
+            get() {
+                val infoEncoded = infoEncoder.encode(info.toByteArray())
+                val token = "${product}_${version}_${env}_${id.toHexString()}_${secret.toHexString()}_$infoEncoded"
+                return QuatiApiToken.Simple(token)
+            }
 
         @OptIn(ExperimentalUuidApi::class)
         public fun parseSimple(token: QuatiApiToken): Result<Simple, InvalidApiTokenException> {

@@ -1,7 +1,6 @@
 import io.github.goquati.kotlin.util.crypto.QuatiApiToken
 import io.github.goquati.kotlin.util.crypto.QuatiApiTokenEncoder
 import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed
-import io.github.goquati.kotlin.util.crypto.token
 import io.github.goquati.kotlin.util.getOrThrow
 import io.github.goquati.kotlin.util.isFailure
 import io.kotest.matchers.shouldBe
