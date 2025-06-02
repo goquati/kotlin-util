@@ -1,6 +1,7 @@
 import io.github.goquati.kotlin.util.crypto.QuatiApiToken
 import io.github.goquati.kotlin.util.crypto.QuatiApiTokenEncoder
 import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed
+import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed.Companion.hint
 import io.github.goquati.kotlin.util.getOrThrow
 import io.github.goquati.kotlin.util.isFailure
 import io.kotest.matchers.shouldBe
@@ -29,7 +30,8 @@ class TokenEncoderTest {
         val match = encoder.matches(token, hash)
 
         hash.toString().startsWith("{pbkdf2}") shouldBe true
-        token.toString() shouldBe "quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_9bcdd265c88d432fa721bad829749538_aGVsbG8gd29ybGQ"
+        token.toString() shouldBe "quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lThoZWxsbyB3b3JsZA"
+        tokenParsed.hint shouldBe "quati_v3_stg_bXl...sZA"
         tokenParsed shouldBe tokenParsed2
         tokenParsed.token shouldBe tokenParsed2.token
         match shouldBe true
@@ -54,7 +56,8 @@ class TokenEncoderTest {
         val match = encoder.matches(token, hash)
 
         hash.toString().startsWith("{pbkdf2}") shouldBe true
-        token.toString() shouldBe "quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_9bcdd265c88d432fa721bad829749538_YWJjw794eXrDvzEyM8O_"
+        token.toString() shouldBe "quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lThhYmPDv3h5esOguMTIzw78"
+        tokenParsed.hint shouldBe "quati_v3_stg_bXl...w78"
         tokenParsed shouldBe tokenParsed2
         tokenParsed.token shouldBe tokenParsed2.token
         match shouldBe true
@@ -63,16 +66,28 @@ class TokenEncoderTest {
     @OptIn(ExperimentalUuidApi::class)
     @Test
     fun testParsing() {
-        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("invalid")).isFailure() shouldBe true
-        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_invalidfb435_9bcdd265c88d432fa721bad829749538_aGVsbG8gd29ybGQ"))
-            .isFailure() shouldBe true
-        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_invalid749538_aGVsbG8gd29ybGQ"))
-            .isFailure() shouldBe true
-        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_9bcdd265c88d432fa721bad829749538_aGVsbG8=="))
-            .isFailure() shouldBe true
+        val gg = QuatiApiTokenParsed.Simple(
+            product = "quati",
+            version = "v3",
+            env = "stg",
+            id = Uuid.parse("6d797633-e609-4820-ac3f-e62ab1efb435"),
+            secret = Uuid.parse("9bcdd265-c88d-432f-a721-bad829749538"),
+            info = "",
+        ).token
 
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("invalid")).isFailure() shouldBe true
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_invalidfb435_9bcdd265"))
+            .isFailure() shouldBe true
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZv"))
+            .isFailure() shouldBe true
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCs"))
+            .isFailure() shouldBe true
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN"))
+            .isFailure() shouldBe true
+        QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lTga"))
+            .getOrThrow()
         val token =
-            QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_9bcdd265c88d432fa721bad829749538_aGVsbG8gd29ybGQ"))
+            QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lThoZWxsbyB3b3JsZA"))
                 .getOrThrow()
         token.product shouldBe "quati"
         token.version shouldBe "v3"

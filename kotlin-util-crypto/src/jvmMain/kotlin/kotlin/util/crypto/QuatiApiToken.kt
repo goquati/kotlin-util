@@ -1,6 +1,5 @@
 package io.github.goquati.kotlin.util.crypto
 
-import kotlin.io.encoding.Base64
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import io.github.goquati.kotlin.util.Result
@@ -48,29 +47,41 @@ public interface QuatiApiTokenParsed {
     }
 
     public companion object {
-        private val infoEncoder = Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT)
+        private val QuatiApiTokenParsed.header: String get() = "${product}_${version}_$env"
+        private val QuatiApiTokenParsed.body: String
+            get() {
+                val bodyStr = Base64Escaped.encode(id.toByteArray() + secret.toByteArray() + info.toByteArray())
+                return bodyStr
+            }
 
         public val QuatiApiTokenParsed.simpleToken: QuatiApiToken.Simple
             get() {
-                val infoEncoded = infoEncoder.encode(info.toByteArray())
-                val token = "${product}_${version}_${env}_${id.toHexString()}_${secret.toHexString()}_$infoEncoded"
+                val token = "${header}_$body"
                 return QuatiApiToken.Simple(token)
+            }
+
+        public val QuatiApiTokenParsed.hint: String
+            get() {
+                val bodyHint = body.let { "${it.take(3)}...${it.takeLast(3)}" }
+                val hint = "${header}_$bodyHint"
+                return hint
             }
 
         @OptIn(ExperimentalUuidApi::class)
         public fun parseSimple(token: QuatiApiToken): Result<Simple, InvalidApiTokenException> {
-            val parts = token.value.split("_").toTypedArray().takeIf { it.size >= 6 }
+            val (product, version, env, bodyStr) = token.value.split("_").toTypedArray().takeIf { it.size == 4 }
                 ?: return Failure(InvalidApiTokenException("invalid number of parts"))
-            val id = runCatching { Uuid.parseHex(parts[3]) }
+            val bodyData = runCatching { Base64Escaped.decode(bodyStr) }
+                .getOrElse { return Failure(InvalidApiTokenException("invalid body")) }
+            val id = runCatching { Uuid.fromByteArray(bodyData.copyOfRange(0, 16)) }
                 .getOrElse { return Failure(InvalidApiTokenException("invalid id")) }
-            val secret = runCatching { Uuid.parseHex(parts[4]) }
+            val secret = runCatching { Uuid.fromByteArray(bodyData.copyOfRange(16, 32)) }
                 .getOrElse { return Failure(InvalidApiTokenException("invalid secret")) }
-            val info = runCatching { infoEncoder.decode(parts.drop(5).joinToString("_")).decodeToString() }
-                .getOrElse { return Failure(InvalidApiTokenException("invalid info")) }
+            val info = bodyData.copyOfRange(32, bodyData.size).decodeToString()
             val token = Simple(
-                product = parts[0],
-                version = parts[1],
-                env = parts[2],
+                product = product,
+                version = version,
+                env = env,
                 id = id,
                 secret = secret,
                 info = info,
