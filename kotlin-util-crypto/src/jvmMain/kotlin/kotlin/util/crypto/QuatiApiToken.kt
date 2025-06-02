@@ -59,13 +59,13 @@ public interface QuatiApiTokenParsed {
 
         @OptIn(ExperimentalUuidApi::class)
         public fun parseSimple(token: QuatiApiToken): Result<Simple, InvalidApiTokenException> {
-            val parts = token.value.split("_").toTypedArray().takeIf { it.size == 6 }
+            val parts = token.value.split("_").toTypedArray().takeIf { it.size >= 6 }
                 ?: return Failure(InvalidApiTokenException("invalid number of parts"))
             val id = runCatching { Uuid.parseHex(parts[3]) }
                 .getOrElse { return Failure(InvalidApiTokenException("invalid id")) }
             val secret = runCatching { Uuid.parseHex(parts[4]) }
                 .getOrElse { return Failure(InvalidApiTokenException("invalid secret")) }
-            val info = runCatching { infoEncoder.decode(parts[5]).decodeToString() }
+            val info = runCatching { infoEncoder.decode(parts.drop(5).joinToString("_")).decodeToString() }
                 .getOrElse { return Failure(InvalidApiTokenException("invalid info")) }
             val token = Simple(
                 product = parts[0],

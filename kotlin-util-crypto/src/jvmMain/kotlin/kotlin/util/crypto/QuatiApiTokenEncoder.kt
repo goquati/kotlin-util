@@ -1,10 +1,8 @@
 package io.github.goquati.kotlin.util.crypto
 
-import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
 import io.github.goquati.kotlin.util.Result
 import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.Failure
@@ -36,9 +34,7 @@ public class QuatiApiTokenEncoder<Token : QuatiApiToken, TokenHash : QuatiApiTok
             get() {
                 val encoder = DelegatingPasswordEncoder(
                     "pbkdf2", mapOf(
-                        "argon2" to Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
                         "pbkdf2" to Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8(),
-                        "scrypt" to SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8(),
                     )
                 )
                 return encoder

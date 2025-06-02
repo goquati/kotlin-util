@@ -35,6 +35,31 @@ class TokenEncoderTest {
         match shouldBe true
     }
 
+    @Test
+    fun testBasic2() {
+        val encoder = QuatiApiTokenEncoder.createSimple()
+
+        @OptIn(ExperimentalUuidApi::class)
+        val tokenParsed = QuatiApiTokenParsed.Simple(
+            product = "quati",
+            version = "v3",
+            env = "stg",
+            id = Uuid.parse("6d797633-e609-4820-ac3f-e62ab1efb435"),
+            secret = Uuid.parse("9bcdd265-c88d-432f-a721-bad829749538"),
+            info = "abcÿxyzÿ123ÿ",
+        )
+        val token = tokenParsed.token
+        val hash = encoder.encode(token)
+        val tokenParsed2 = encoder.parse(token).getOrThrow()
+        val match = encoder.matches(token, hash)
+
+        hash.toString().startsWith("{pbkdf2}") shouldBe true
+        token.toString() shouldBe "quati_v3_stg_6d797633e6094820ac3fe62ab1efb435_9bcdd265c88d432fa721bad829749538_YWJjw794eXrDvzEyM8O_"
+        tokenParsed shouldBe tokenParsed2
+        tokenParsed.token shouldBe tokenParsed2.token
+        match shouldBe true
+    }
+
     @OptIn(ExperimentalUuidApi::class)
     @Test
     fun testParsing() {
