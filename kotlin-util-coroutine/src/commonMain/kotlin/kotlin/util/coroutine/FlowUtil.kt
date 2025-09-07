@@ -1,5 +1,8 @@
 package io.github.goquati.kotlin.util.coroutine
 
+import io.github.goquati.kotlin.util.Failure
+import io.github.goquati.kotlin.util.Result
+import io.github.goquati.kotlin.util.Success
 import io.github.goquati.kotlin.util.associateByNotNull
 import io.github.goquati.kotlin.util.associateWithNotNull
 import io.github.goquati.kotlin.util.groupByNotNull
@@ -63,4 +66,26 @@ public suspend fun <T> Iterable<T>.emitAll() {
 context(collector: FlowCollector<T>)
 public suspend fun <T> Flow<T>.emitAll() {
     collector.emitAll(this)
+}
+
+public data class WithIsLastValue<out T>(public val isLast: Boolean, public val value: T)
+public data class IndexedWithIsLastValue<out T>(public val index: Int, public val isLast: Boolean, public val value: T)
+
+public fun <T> Flow<T>.withIsLast(): Flow<WithIsLastValue<T>> = flow {
+    var prev: Result<T, Unit> = Failure(Unit)
+    collect { current ->
+        when (val p = prev) {
+            is Failure -> Unit
+            is Success -> emit(WithIsLastValue(isLast = false, value = p.value))
+        }
+        prev = Success(current)
+    }
+    when (val p = prev) {
+        is Failure -> Unit
+        is Success -> emit(WithIsLastValue(isLast = true, value = p.value))
+    }
+}
+
+public fun <T> Flow<T>.withIndexedAndIsLast(): Flow<IndexedWithIsLastValue<T>> = withIsLast().withIndex().map {
+    IndexedWithIsLastValue(index = it.index, value = it.value.value, isLast = it.value.isLast)
 }

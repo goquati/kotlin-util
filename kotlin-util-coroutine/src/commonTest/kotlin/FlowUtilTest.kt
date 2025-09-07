@@ -189,4 +189,24 @@ class FlowUtilTest {
             "orange" to 6,
         )
     }
+
+    @Test
+    fun testWithIsLast(): TestResult = runTest {
+        flowOf<String>().withIsLast().toList() shouldBe emptyList()
+        flowOf("apple", "banana", "orange").withIsLast().toList() shouldBe listOf(
+            WithIsLastValue(false, "apple"),
+            WithIsLastValue(false, "banana"),
+            WithIsLastValue(true, "orange"),
+        )
+    }
+
+    @Test
+    fun testWithIndexedAndIsLast(): TestResult = runTest {
+        flowOf<String>().withIndexedAndIsLast().toList() shouldBe emptyList()
+        flowOf("apple", "banana", "orange").withIndexedAndIsLast().toList() shouldBe listOf(
+            IndexedWithIsLastValue(0, false, "apple"),
+            IndexedWithIsLastValue(1, false, "banana"),
+            IndexedWithIsLastValue(2, true, "orange"),
+        )
+    }
 }
