@@ -1,5 +1,8 @@
 import io.github.goquati.kotlin.util.coroutine.CoalescingTaskRunner
 import io.github.goquati.kotlin.util.coroutine.CoalescingTaskRunnerWithResult
+import io.github.goquati.kotlin.util.coroutine.ConcurrentQuatiMap
+import io.github.goquati.kotlin.util.coroutine.ConcurrentQuatiMapSimple
+import io.github.goquati.kotlin.util.coroutine.IConcurrentQuatiMap
 import io.github.goquati.kotlin.util.coroutine.awaitAll
 import io.github.goquati.kotlin.util.coroutine.launchJobs
 import io.github.goquati.kotlin.util.coroutine.launchWorker
@@ -23,6 +26,25 @@ import kotlin.test.Test
 
 
 class ParallelUtilTest {
+    @Test
+    fun testConcurrentQuatiMap(): TestResult = runTest {
+        suspend fun test(data: IConcurrentQuatiMap<Int, String>) {
+            val s0 = data.getCurrentKeys()
+            data.getOrPut(1) { "1" } shouldBe "1"
+            val s1 = data.getCurrentKeys()
+            data.getOrPut(1) { "2" } shouldBe "1"
+            val s2 = data.getCurrentKeys()
+            data.getOrPut(2) { "2" } shouldBe "2"
+            val s3 = data.getCurrentKeys()
+            s0 shouldBe setOf()
+            s1 shouldBe setOf(1)
+            s2 shouldBe setOf(1)
+            s3 shouldBe setOf(1, 2)
+        }
+        test(ConcurrentQuatiMap())
+        test(ConcurrentQuatiMapSimple())
+    }
+
     @Test
     fun testMapParallel(): TestResult = runTest {
         flowOf(1, 2, 3, 4).mapParallel { yield(); "$it" }

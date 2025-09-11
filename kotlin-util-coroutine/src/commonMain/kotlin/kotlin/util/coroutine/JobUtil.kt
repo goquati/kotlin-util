@@ -3,6 +3,7 @@ package io.github.goquati.kotlin.util.coroutine
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.time.Duration
 
 
 public fun CoroutineScope.loopCatching(
@@ -26,3 +27,19 @@ public fun <T> CoroutineScope.lazyAsync(
     start = CoroutineStart.LAZY,
     block = block,
 )
+
+public suspend fun <T> withNullableTimeout(
+    timeout: Duration?,
+    block: suspend () -> T,
+): T = when (timeout) {
+    null -> block()
+    else -> withTimeout(timeout) { block() }
+}
+
+public suspend fun <T> withNullableTimeoutOrNull(
+    timeout: Duration?,
+    block: suspend () -> T,
+): T? = when (timeout) {
+    null -> block()
+    else -> withTimeoutOrNull(timeout) { block() }
+}

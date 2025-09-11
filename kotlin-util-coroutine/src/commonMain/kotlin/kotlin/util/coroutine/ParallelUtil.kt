@@ -4,7 +4,30 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.CoroutineContext
+
+public interface IConcurrentQuatiMap<K : Any, V : Any> {
+    public suspend fun getCurrentKeys(): Set<K>
+    public suspend fun getOrPut(key: K, initializer: () -> V): V
+}
+
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+public expect class ConcurrentQuatiMap<K : Any, V : Any>: IConcurrentQuatiMap<K,V>{
+    public constructor()
+    override suspend fun getCurrentKeys(): Set<K>
+    override suspend fun getOrPut(key: K, initializer: () -> V): V
+}
+
+internal class ConcurrentQuatiMapSimple<K : Any, V : Any> : IConcurrentQuatiMap<K,V> {
+    private val data = mutableMapOf<K, V>()
+    private val mutex = Mutex()
+    override suspend fun getCurrentKeys(): Set<K> = mutex.withLock { data.keys.toSet() }
+    override suspend fun getOrPut(key: K, initializer: () -> V): V = mutex.withLock {
+        data.getOrPut(key) { initializer() }
+    }
+}
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 public fun <T, R> Flow<T>.mapParallel(
