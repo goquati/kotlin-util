@@ -15,7 +15,7 @@ public inline fun <K, V, R : Any> Map<out K, V>.mapKeysNotNull(
 public fun <K, V> Iterable<Map<K, V>>.flatten(): Map<K, V> =
     flatMap { it.entries }.associate { it.key to it.value }
 
-public fun <K, T1, T2, R> combine(
+public inline fun <K, T1, T2, R> combine(
     m1: Map<K, T1>,
     m2: Map<K, T2>,
     transform: (K, T1, T2) -> R
@@ -23,7 +23,7 @@ public fun <K, T1, T2, R> combine(
     transform(it, m1[it]!!, m2[it]!!)
 }
 
-public fun <K, T1, T2, T3, R> combine(
+public inline fun <K, T1, T2, T3, R> combine(
     m1: Map<K, T1>,
     m2: Map<K, T2>,
     m3: Map<K, T3>,
@@ -32,7 +32,7 @@ public fun <K, T1, T2, T3, R> combine(
     transform(it, m1[it]!!, m2[it]!!, m3[it]!!)
 }
 
-public fun <K, T1, T2, T3, T4, R> combine(
+public inline fun <K, T1, T2, T3, T4, R> combine(
     m1: Map<K, T1>,
     m2: Map<K, T2>,
     m3: Map<K, T3>,
@@ -42,7 +42,7 @@ public fun <K, T1, T2, T3, T4, R> combine(
     transform(it, m1[it]!!, m2[it]!!, m3[it]!!, m4[it]!!)
 }
 
-public fun <K, T1, T2, T3, T4, T5, R> combine(
+public inline fun <K, T1, T2, T3, T4, T5, R> combine(
     m1: Map<K, T1>,
     m2: Map<K, T2>,
     m3: Map<K, T3>,
