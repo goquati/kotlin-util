@@ -10,6 +10,7 @@ import io.github.goquati.kotlin.util.coroutine.mapParallel
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.test.TestResult
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
@@ -122,6 +124,8 @@ class ParallelUtilTest {
                     delay(3)
                 }
                 delay(400)
+                @OptIn(ExperimentalCoroutinesApi::class)
+                advanceUntilIdle()
                 count shouldBe 2
                 runner.schedule()
             }

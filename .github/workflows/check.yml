@@ -22,3 +22,9 @@ jobs:
           distribution: 'temurin'
       - name: check
         run: ./gradlew check
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jsBrowserTest-report
+          path: kotlin-util-coroutine/build/reports/tests/allTests/

@@ -47,13 +47,7 @@ class StateFlowTableTest {
     @Test
     fun `dropAllBefore removes older timestamps`(): TestResult = runTest {
         @OptIn(ExperimentalTime::class)
-        val testClock = object : Clock {
-            var current = Instant.fromEpochMilliseconds(0)
-            fun plus(d: Duration) {
-                current = current.plus(d)
-            }
-            override fun now() = current
-        }
+        val testClock = TestClock()
         @OptIn(ExperimentalTime::class)
         val table = StateFlowTable<Long, String, Int>(clock = testClock)
         table.update(1L, "old") { _, _ -> 47 }

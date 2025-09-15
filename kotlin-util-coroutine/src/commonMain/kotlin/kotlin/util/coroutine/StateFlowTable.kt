@@ -121,7 +121,7 @@ public class StateFlowTable<ID0 : Any, ID1 : Any, V : Any> @OptIn(ExperimentalTi
      */
     public fun subscribe(id: ID0): Flow<StateEvent<ID1, V>> = flow {
         get(id).fold(initial = emptyMap<ID1, WithTimestamp<V>>()) { prev, state ->
-            (prev.keys + state.keys).forEach { key ->
+            (prev.keys + state.keys).forEach { key -> // TODO, this is slow if maps are big
                 val v0 = prev[key]?.value
                 val v1 = state[key]?.value
                 if (v1 == null)
