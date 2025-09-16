@@ -86,74 +86,86 @@ class ParallelUtilTest {
 
     @Test
     fun testCoalescingTaskRunner(): TestResult = runTest {
-        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
-            var count = 0
-            CoalescingTaskRunner {
-                count++
-                delay(100)
-            }.use { runner ->
-                repeat(10) {
-                    runner.schedule()
-                    delay(3)
-                }
-                delay(400)
-                count shouldBe 2
+        var count = 0
+        CoalescingTaskRunner(
+            context = coroutineContext,
+        ) {
+            count++
+            delay(100)
+        }.use { runner ->
+            repeat(10) {
                 runner.schedule()
+                delay(3)
             }
-            count shouldBe 3
+            @OptIn(ExperimentalCoroutinesApi::class)
+            advanceUntilIdle()
+            count shouldBe 2
+            runner.schedule()
         }
+        count shouldBe 3
     }
 
     private object TestException : Exception()
 
     @Test
     fun testCoalescingTaskRunnerErrorHandler(): TestResult = runTest {
-        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
-            var count = 0
-            CoalescingTaskRunner(
-                errorHandler = {
-                    count++
-                    it shouldBe TestException
-                },
-            ) {
-                delay(100)
-                throw TestException
-            }.use { runner ->
-                repeat(10) {
-                    runner.schedule()
-                    delay(3)
-                }
-                delay(400)
-                @OptIn(ExperimentalCoroutinesApi::class)
-                advanceUntilIdle()
-                count shouldBe 2
+        var count = 0
+        CoalescingTaskRunner(
+            context = coroutineContext,
+            errorHandler = {
+                count++
+                it shouldBe TestException
+            },
+        ) {
+            delay(100)
+            throw TestException
+        }.use { runner ->
+            repeat(10) {
                 runner.schedule()
+                delay(3)
             }
-            count shouldBe 3
+            @OptIn(ExperimentalCoroutinesApi::class)
+            advanceUntilIdle()
+            count shouldBe 2
+            runner.schedule()
         }
+        count shouldBe 3
     }
-
 
     @Test
     fun testCoalescingTaskRunnerWithResult(): TestResult = runTest {
-        withContext(Dispatchers.Default) { // delays are skipped in test dispatcher
-            var count = 0
-            val result = CoalescingTaskRunnerWithResult {
-                delay(100)
-                count++
-            }.use { runner ->
-                val results = (0..<10).map {
-                    delay(3)
-                    async {
-                        runner.schedule()
-                    }
-                }.awaitAll()
-                results.toSet() shouldBe setOf(0, 1)
-                count shouldBe 2
-                runner.schedule()
-            }
-            result shouldBe 2
-            count shouldBe 3
+        var count = 0
+        val result = CoalescingTaskRunnerWithResult(
+            context = coroutineContext,
+        ) {
+            delay(100)
+            count++
+        }.use { runner ->
+            val results = (0..<10).map {
+                delay(3)
+                async {
+                    runner.schedule()
+                }
+            }.awaitAll()
+            results.toSet() shouldBe setOf(0, 1)
+            count shouldBe 2
+            runner.schedule()
+        }
+        result shouldBe 2
+        count shouldBe 3
+    }
+
+    @Test
+    fun testCoalescingTaskRunnerDefaultContext(): TestResult = runTest {
+        CoalescingTaskRunner {
+            delay(100)
+        }.use { runner ->
+            runner.schedule()
+        }
+        CoalescingTaskRunnerWithResult {
+            delay(100)
+        }.use { runner ->
+            runner.schedule()
         }
     }
 }
