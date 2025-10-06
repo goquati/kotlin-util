@@ -60,6 +60,14 @@ class ResultUtilTest {
     }
 
     @Test
+    fun testFlatMapFailure() {
+        r1.flatMapFailure { Failure(Error("r1.2")) }.failureOrNull shouldBe Error("r1.2")
+        r1.flatMapFailure { Success("1") }.successOrNull shouldBe "1"
+        r2.flatMapFailure { Failure(Error("r2.2")) }.successOrNull shouldBe "r2"
+        r2.flatMapFailure { Success("2") }.successOrNull shouldBe "r2"
+    }
+
+    @Test
     fun testMapError() {
         r1.mapError { 'r' }.failureOrNull shouldBe 'r'
         r2.mapError { 'r' }.successOrNull shouldBe "r2"

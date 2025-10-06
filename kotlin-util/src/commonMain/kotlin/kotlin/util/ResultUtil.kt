@@ -69,6 +69,14 @@ public inline fun <T1, T2, E> Result<T1, E>.flatMap(block: (T1) -> Result<T2, E>
     }
 }
 
+public inline fun <T, E> Result<T, E>.flatMapFailure(block: (E) -> Result<T, E>): Result<T, E> {
+    contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
+    return when (this) {
+        is Failure -> block(failure)
+        is Success -> this
+    }
+}
+
 public inline fun <T, E1, E2> Result<T, E1>.mapError(block: (E1) -> E2): Result<T, E2> {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return when (this) {
