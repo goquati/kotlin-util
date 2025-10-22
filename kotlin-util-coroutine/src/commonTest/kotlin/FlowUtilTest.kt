@@ -1,5 +1,6 @@
 import io.github.goquati.kotlin.util.coroutine.*
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -16,7 +17,10 @@ class FlowUtilTest {
 
     @Test
     fun testIsEmpty(): TestResult = runTest {
-        flowOf<Int>().isEmpty() shouldBe true
+        suspend fun test(vararg data: Int) = data.toList().asFlow().isEmpty() shouldBe data.isEmpty()
+        test()
+        test(1)
+        test(1, 2)
         flow {
             emit(1)
             throw Exception()
@@ -25,11 +29,75 @@ class FlowUtilTest {
 
     @Test
     fun testIsNotEmpty(): TestResult = runTest {
-        flowOf<Int>().isNotEmpty() shouldBe false
+        suspend fun test(vararg data: Int) = data.toList().asFlow().isNotEmpty() shouldBe data.isNotEmpty()
+        test()
+        test(1)
+        test(1, 2)
         flow {
             emit(1)
-            throw Exception()
+            throw Exception() // should not be called
         }.isNotEmpty() shouldBe true
+    }
+
+    @Test
+    fun testAny(): TestResult = runTest {
+        suspend fun test(vararg data: Int) = data.toList().asFlow().any() shouldBe data.toList().any()
+        suspend fun testPredicate(vararg data: Boolean) =
+            data.toList().asFlow().any { it } shouldBe data.toList().any { it }
+        test()
+        test(1)
+        test(1, 2)
+        testPredicate()
+        testPredicate(true)
+        testPredicate(false)
+        testPredicate(true, false)
+        testPredicate(false, true)
+        flow {
+            emit(0)
+            throw Exception() // should not be called
+        }.any() shouldBe true
+        flow {
+            emit(true)
+            throw Exception() // should not be called
+        }.any { it } shouldBe true
+    }
+
+    @Test
+    fun testAll(): TestResult = runTest {
+        suspend fun testPredicate(vararg data: Boolean) =
+            data.toList().asFlow().all { it } shouldBe data.toList().all { it }
+        testPredicate()
+        testPredicate(true)
+        testPredicate(false)
+        testPredicate(true, false)
+        testPredicate(false, true)
+        flow {
+            emit(false)
+            throw Exception() // should not be called
+        }.all { it } shouldBe false
+    }
+
+    @Test
+    fun testNone(): TestResult = runTest {
+        suspend fun test(vararg data: Int) = data.toList().asFlow().none() shouldBe data.toList().none()
+        suspend fun testPredicate(vararg data: Boolean) =
+            data.toList().asFlow().none { it } shouldBe data.toList().none { it }
+        test()
+        test(1)
+        test(1, 2)
+        testPredicate()
+        testPredicate(true)
+        testPredicate(false)
+        testPredicate(true, false)
+        testPredicate(false, true)
+        flow {
+            emit(0)
+            throw Exception() // should not be called
+        }.none() shouldBe false
+        flow {
+            emit(true)
+            throw Exception() // should not be called
+        }.none { it } shouldBe false
     }
 
     @Test

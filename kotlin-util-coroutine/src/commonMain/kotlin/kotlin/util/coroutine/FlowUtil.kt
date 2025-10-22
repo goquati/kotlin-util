@@ -10,7 +10,19 @@ import kotlinx.coroutines.flow.*
 
 
 public suspend fun <T> Flow<T>.isEmpty(): Boolean = take(1).count() == 0
-public suspend fun <T> Flow<T>.isNotEmpty(): Boolean = !isEmpty()
+public suspend fun <T> Flow<T>.isNotEmpty(): Boolean = take(1).count() == 1
+
+public suspend fun <T> Flow<T>.any(): Boolean = take(1).count() == 1
+public suspend fun <T> Flow<T>.none(): Boolean = take(1).count() == 0
+
+public suspend inline fun <T> Flow<T>.any(crossinline predicate: (T) -> Boolean): Boolean =
+    filter(predicate).take(1).count() != 0
+
+public suspend inline fun <T> Flow<T>.all(crossinline predicate: suspend (T) -> Boolean): Boolean =
+    filterNot(predicate).take(1).count() == 0
+
+public suspend inline fun <T> Flow<T>.none(crossinline predicate: suspend (T) -> Boolean): Boolean =
+    filter(predicate).take(1).count() == 0
 
 public fun <T, C : Collection<T>> Flow<C>.filterNotEmpty(): Flow<C> = filter { !it.isEmpty() }
 
