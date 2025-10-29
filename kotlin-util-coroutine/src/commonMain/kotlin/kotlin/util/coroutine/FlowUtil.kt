@@ -101,3 +101,31 @@ public fun <T> Flow<T>.withIsLast(): Flow<WithIsLastValue<T>> = flow {
 public fun <T> Flow<T>.withIndexedAndIsLast(): Flow<IndexedWithIsLastValue<T>> = withIsLast().withIndex().map {
     IndexedWithIsLastValue(index = it.index, value = it.value.value, isLast = it.value.isLast)
 }
+
+public suspend inline fun <T> Flow<T>.reduceOrNull(
+    noinline operation: suspend (acc: T, value: T) -> T
+): T? = runningReduce(operation).lastOrNull()
+
+public suspend inline fun <T, R : Comparable<R>> Flow<T>.maxByOrNull(crossinline selector: suspend (T) -> R): T? =
+    map { it to selector(it) }
+        .runningReduce { acc, value -> maxOf(acc, value, compareBy { it.second }) }
+        .map { it.first }
+        .lastOrNull()
+
+public suspend inline fun <T, R : Comparable<R>> Flow<T>.maxOfOrNull(crossinline selector: suspend (T) -> R): R? =
+    map { it to selector(it) }
+        .runningReduce { acc, value -> maxOf(acc, value, compareBy { it.second }) }
+        .map { it.second }
+        .lastOrNull()
+
+public suspend inline fun <T, R : Comparable<R>> Flow<T>.minByOrNull(crossinline selector: suspend (T) -> R): T? =
+    map { it to selector(it) }
+        .runningReduce { acc, value -> minOf(acc, value, compareBy { it.second }) }
+        .map { it.first }
+        .lastOrNull()
+
+public suspend inline fun <T, R : Comparable<R>> Flow<T>.minOfOrNull(crossinline selector: suspend (T) -> R): R? =
+    map { it to selector(it) }
+        .runningReduce { acc, value -> minOf(acc, value, compareBy { it.second }) }
+        .map { it.second }
+        .lastOrNull()

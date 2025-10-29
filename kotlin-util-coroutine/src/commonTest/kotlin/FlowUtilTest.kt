@@ -277,4 +277,38 @@ class FlowUtilTest {
             IndexedWithIsLastValue(2, true, "orange"),
         )
     }
+
+    @Test
+    fun testReduceOrNull(): TestResult = runTest {
+        suspend fun test(vararg data: Int) {
+            val op1 = { a: Int, b: Int -> a + b }
+            data.asFlow().reduceOrNull(op1) shouldBe data.reduceOrNull(op1)
+            val op2 = { a: Int, b: Int -> a - b }
+            data.asFlow().reduceOrNull(op2) shouldBe data.reduceOrNull(op2)
+            val op3 = { a: Int, b: Int -> maxOf(a, b) }
+            data.asFlow().reduceOrNull(op3) shouldBe data.reduceOrNull(op3)
+        }
+        test()
+        test(42)
+        test(1, 2, 3, 4)
+        test(-5, 10, -3)
+
+        val d1 = listOf("a", "b", null, "c")
+        d1.asFlow().reduceOrNull { a, b -> a + b } shouldBe d1.reduceOrNull { a, b -> a + b }
+    }
+
+    @Test
+    fun testMinMaxOfByOrNull(): TestResult = runTest {
+        suspend fun test(vararg data: String) {
+            data.asFlow().maxOfOrNull { it.length } shouldBe data.maxOfOrNull { it.length }
+            data.asFlow().maxByOrNull { it.length } shouldBe data.maxByOrNull { it.length }
+            data.asFlow().minOfOrNull { it.length } shouldBe data.minOfOrNull { it.length }
+            data.asFlow().minByOrNull { it.length } shouldBe data.minByOrNull { it.length }
+        }
+
+        test()
+        test("a")
+        test("a", "b", "c")
+        test("a", "ab", "abc")
+    }
 }
