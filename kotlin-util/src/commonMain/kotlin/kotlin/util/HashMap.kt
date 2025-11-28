@@ -1,5 +1,7 @@
 package io.github.goquati.kotlin.util
 
+public fun <K,V, C : Map<K,V>> C.takeIfNotEmpty(): C? = takeIf { it.isNotEmpty() }
+
 public inline fun <K, V, R : Any> Map<out K, V>.mapValuesNotNull(
     transform: (Map.Entry<K, V>) -> R?,
 ): Map<K, R> = mapNotNull {

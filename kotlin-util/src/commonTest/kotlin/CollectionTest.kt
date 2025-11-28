@@ -1,3 +1,4 @@
+import io.github.goquati.kotlin.util.asOrNull
 import io.github.goquati.kotlin.util.containsAny
 import io.github.goquati.kotlin.util.intersectAll
 import io.github.goquati.kotlin.util.takeIfNotEmpty
@@ -9,6 +10,15 @@ class CollectionTest {
     fun testTakeIfNotEmpty() {
         listOf(1,2,3).takeIfNotEmpty() shouldBe listOf(1,2,3)
         listOf<Int>().takeIfNotEmpty() shouldBe null
+    }
+
+    @Test
+    fun testOrEmpty() {
+        listOf(1,2,3).takeIf { false }.orEmpty() shouldBe listOf()
+        listOf(1,2,3).takeIf { true }.orEmpty() shouldBe listOf(1,2,3)
+
+        listOf(1,2,3).asOrNull<Collection<Int>>().takeIf { false }.orEmpty() shouldBe listOf()
+        listOf(1,2,3).asOrNull<Collection<Int>>().takeIf { true }.orEmpty() shouldBe listOf(1,2,3)
     }
 
     @Test

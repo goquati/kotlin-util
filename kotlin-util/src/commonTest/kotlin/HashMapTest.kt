@@ -2,10 +2,17 @@ import io.github.goquati.kotlin.util.combine
 import io.github.goquati.kotlin.util.flatten
 import io.github.goquati.kotlin.util.mapKeysNotNull
 import io.github.goquati.kotlin.util.mapValuesNotNull
+import io.github.goquati.kotlin.util.takeIfNotEmpty
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class HashMapTest {
+    @Test
+    fun testTakeIfNotEmpty() {
+        mapOf(1 to "1", 2 to "2").takeIfNotEmpty() shouldBe mapOf(1 to "1", 2 to "2")
+        mapOf<Int, String>().takeIfNotEmpty() shouldBe null
+    }
+
     @Test
     fun testMapValuesNotNull() {
         mapOf<String, Int>().mapValuesNotNull { it.value } shouldBe mapOf()

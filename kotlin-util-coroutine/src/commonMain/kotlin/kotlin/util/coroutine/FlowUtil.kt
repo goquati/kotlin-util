@@ -8,6 +8,7 @@ import io.github.goquati.kotlin.util.associateWithNotNull
 import io.github.goquati.kotlin.util.groupByNotNull
 import kotlinx.coroutines.flow.*
 
+public fun <T> Flow<T>?.orEmpty(): Flow<T> = this ?: flowOf()
 
 public suspend fun <T> Flow<T>.isEmpty(): Boolean = take(1).count() == 0
 public suspend fun <T> Flow<T>.isNotEmpty(): Boolean = take(1).count() == 1

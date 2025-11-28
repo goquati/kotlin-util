@@ -16,6 +16,12 @@ class FlowUtilTest {
     }
 
     @Test
+    fun testOrEmpty(): TestResult = runTest {
+        flowOf(1,2,3).takeIf { false }.orEmpty().toList() shouldBe listOf()
+        flowOf(1,2,3).takeIf { true }.orEmpty().toList() shouldBe listOf(1,2,3)
+    }
+
+    @Test
     fun testIsEmpty(): TestResult = runTest {
         suspend fun test(vararg data: Int) = data.toList().asFlow().isEmpty() shouldBe data.isEmpty()
         test()

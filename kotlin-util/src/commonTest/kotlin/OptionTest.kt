@@ -3,6 +3,7 @@ import io.github.goquati.kotlin.util.isSome
 import io.github.goquati.kotlin.util.isUndefined
 import io.github.goquati.kotlin.util.map
 import io.github.goquati.kotlin.util.takeSome
+import io.github.goquati.kotlin.util.toOption
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -34,5 +35,11 @@ class OptionTest {
     fun optionMapTests() {
         Option.Some("foobar").map { it.length }.takeSome()!!.value shouldBe 6
         (Option.Undefined as Option<String>).map { it.length } shouldBe Option.Undefined
+    }
+
+    @Test
+    fun optionToOptionTests() {
+        "foobar".toOption() shouldBe Option.Some("foobar")
+        null.toOption<String?>() shouldBe Option.Some<String?>(null)
     }
 }
