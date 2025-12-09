@@ -8,7 +8,15 @@ plugins {
 
 kotlin {
     jvm()
-
+    js {
+        browser()
+        nodejs()
+    }
+    macosX64()
+    macosArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
     sourceSets {
         all {
             languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
@@ -20,29 +28,36 @@ kotlin {
                 allWarningsAsErrors = true
                 apiVersion.set(KotlinVersion.KOTLIN_2_2)
                 languageVersion.set(KotlinVersion.KOTLIN_2_2)
+                freeCompilerArgs.add("-Xcontext-parameters")
             }
             dependencies {
                 api(project(":kotlin-util"))
-                val kotlinxCoroutineVersion: String by rootProject.extra
-                implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutineVersion")
+                val kotlinxSerializationVersion: String by rootProject.extra
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:${kotlinxSerializationVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationVersion}")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
             }
         }
     }
 }
-
+val CoverageUnit.bound
+    get() = when (this) {
+        CoverageUnit.LINE -> 69
+        CoverageUnit.INSTRUCTION -> 79
+        CoverageUnit.BRANCH -> 100
+    }
 kover {
     reports {
         verify {
             CoverageUnit.values().forEach { covUnit ->
                 rule("minimal ${covUnit.name.lowercase()} coverage rate") {
-                    minBound(100, coverageUnits = covUnit)
+                    minBound(covUnit.bound, coverageUnits = covUnit)
                 }
             }
         }

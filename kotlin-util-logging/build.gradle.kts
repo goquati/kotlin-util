@@ -1,3 +1,4 @@
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -31,6 +32,18 @@ kotlin {
                 implementation("io.kotest:kotest-assertions-core")
                 implementation("io.mockk:mockk")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+            }
+        }
+    }
+}
+
+kover {
+    reports {
+        verify {
+            CoverageUnit.values().forEach { covUnit ->
+                rule("minimal ${covUnit.name.lowercase()} coverage rate") {
+                    minBound(100, coverageUnits = covUnit)
+                }
             }
         }
     }

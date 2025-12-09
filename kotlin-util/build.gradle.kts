@@ -1,3 +1,4 @@
+import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
@@ -34,6 +35,26 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core")
+            }
+        }
+    }
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "io.github.goquati.kotlin.util.Success",
+                    "io.github.goquati.kotlin.util.Failure",
+                )
+            }
+        }
+        verify {
+            CoverageUnit.values().forEach { covUnit ->
+                rule("minimal ${covUnit.name.lowercase()} coverage rate") {
+                    minBound(100, coverageUnits = covUnit)
+                }
             }
         }
     }

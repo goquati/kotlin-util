@@ -20,5 +20,7 @@ include(
     "kotlin-util-coroutine",
     "kotlin-util-crypto",
     "kotlin-util-csv",
+    "kotlin-util-jackson",
+    "kotlin-util-kotlinx-serialization",
     "kotlin-util-logging",
 )

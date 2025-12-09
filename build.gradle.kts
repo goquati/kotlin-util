@@ -24,6 +24,8 @@ enum class SupProjects(val projectName: String) {
     KOTLIN_UTIL_COROUTINE("kotlin-util-coroutine"),
     KOTLIN_UTIL_CRYPTO("kotlin-util-crypto"),
     KOTLIN_UTIL_CSV("kotlin-util-csv"),
+    KOTLIN_UTIL_JACKSON("kotlin-util-jackson"),
+    KOTLIN_UTIL_KOTLINX_SERIALIZATION("kotlin-util-kotlinx-serialization"),
     KOTLIN_UTIL_LOGGING("kotlin-util-logging"),
 }
 
@@ -72,26 +74,6 @@ subprojects {
         }
     }
 
-    kover {
-        reports {
-            filters {
-                excludes {
-                    classes(
-                        "io.github.goquati.kotlin.util.Success",
-                        "io.github.goquati.kotlin.util.Failure",
-                    )
-                }
-            }
-            verify {
-                CoverageUnit.values().forEach { covUnit ->
-                    rule("minimal ${covUnit.name.lowercase()} coverage rate") {
-                        minBound(100, coverageUnits = covUnit)
-                    }
-                }
-            }
-        }
-    }
-
     val artifactId = project.name
     val descriptionStr = when (projectType) {
         SupProjects.KOTLIN_UTIL -> "Enhanced Kotlin util functions for simpler code."
@@ -99,6 +81,8 @@ subprojects {
         SupProjects.KOTLIN_UTIL_COROUTINE -> "Enhanced Kotlin coroutine util functions for simpler code."
         SupProjects.KOTLIN_UTIL_CRYPTO -> "A Kotlin library for crypto util such as hashing functions"
         SupProjects.KOTLIN_UTIL_CSV -> "A Kotlin library for type-safe CSV writing with coroutine support."
+        SupProjects.KOTLIN_UTIL_JACKSON -> "Convenient Jackson utilities for Kotlin, simplifying JSON serialization and deserialization with cleaner and more idiomatic APIs."
+        SupProjects.KOTLIN_UTIL_KOTLINX_SERIALIZATION -> "Convenient Kotlinx Serialization utilities for Kotlin, simplifying JSON serialization and deserialization with cleaner and more idiomatic APIs."
         SupProjects.KOTLIN_UTIL_LOGGING -> "Provides convenient helper functions to streamline SLF4J logging in Kotlin, improving logging practices with less boilerplate."
     }
     mavenPublishing {

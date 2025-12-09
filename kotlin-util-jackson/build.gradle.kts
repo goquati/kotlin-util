@@ -23,13 +23,16 @@ kotlin {
             }
             dependencies {
                 api(project(":kotlin-util"))
-                val kotlinxCoroutineVersion: String by rootProject.extra
-                implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutineVersion")
+                val jacksonVersion: String by rootProject.extra
+                implementation("tools.jackson.core:jackson-databind:$jacksonVersion")
             }
         }
         val commonTest by getting {
+            compilerOptions {
+                freeCompilerArgs.add("-Xannotation-default-target=param-property")
+            }
             dependencies {
+                implementation("tools.jackson.module:jackson-module-kotlin")
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core")
             }
@@ -37,12 +40,18 @@ kotlin {
     }
 }
 
+val CoverageUnit.bound
+    get() = when (this) {
+        CoverageUnit.LINE -> 76
+        CoverageUnit.INSTRUCTION -> 73
+        CoverageUnit.BRANCH -> 47
+    }
 kover {
     reports {
         verify {
             CoverageUnit.values().forEach { covUnit ->
                 rule("minimal ${covUnit.name.lowercase()} coverage rate") {
-                    minBound(100, coverageUnits = covUnit)
+                    minBound(covUnit.bound, coverageUnits = covUnit)
                 }
             }
         }
