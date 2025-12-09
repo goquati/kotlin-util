@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

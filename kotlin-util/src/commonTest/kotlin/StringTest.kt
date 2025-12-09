@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.ensurePrefix
-import io.github.goquati.kotlin.util.ensureSuffix
-import io.github.goquati.kotlin.util.takeIfNotBlank
+import de.quati.kotlin.util.ensurePrefix
+import de.quati.kotlin.util.ensureSuffix
+import de.quati.kotlin.util.takeIfNotBlank
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

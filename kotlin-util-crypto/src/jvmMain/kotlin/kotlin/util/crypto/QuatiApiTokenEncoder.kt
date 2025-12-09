@@ -1,12 +1,12 @@
-package io.github.goquati.kotlin.util.crypto
+package de.quati.kotlin.util.crypto
 
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.getOr
+import de.quati.kotlin.util.Result
+import de.quati.kotlin.util.Success
+import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.getOr
 
 public class QuatiApiTokenEncoder<Token : QuatiApiToken, TokenHash : QuatiApiTokenHash, TokenParsed : QuatiApiTokenParsed>(
     private val hasher: PasswordEncoder = defaultEncoder,

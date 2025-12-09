@@ -1,10 +1,10 @@
-package io.github.goquati.kotlin.util.crypto
+package de.quati.kotlin.util.crypto
 
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.Success
+import de.quati.kotlin.util.Result
+import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.Success
 
 public interface QuatiApiTokenHash {
     public val value: String

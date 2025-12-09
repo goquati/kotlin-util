@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.*
+import de.quati.kotlin.util.*
 import kotlinx.coroutines.flow.*
 
 

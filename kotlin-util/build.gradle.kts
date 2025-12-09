@@ -45,8 +45,8 @@ kover {
         filters {
             excludes {
                 classes(
-                    "io.github.goquati.kotlin.util.Success",
-                    "io.github.goquati.kotlin.util.Failure",
+                    "de.quati.kotlin.util.Success",
+                    "de.quati.kotlin.util.Failure",
                 )
             }
         }

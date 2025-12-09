@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.coroutine.*
-import io.github.goquati.kotlin.util.exceptionOrThrow
+import de.quati.kotlin.util.coroutine.*
+import de.quati.kotlin.util.exceptionOrThrow
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestResult

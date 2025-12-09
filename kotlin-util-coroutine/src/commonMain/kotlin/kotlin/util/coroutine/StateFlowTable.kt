@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.WithTimestamp
+import de.quati.kotlin.util.WithTimestamp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.*
+import de.quati.kotlin.util.*
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

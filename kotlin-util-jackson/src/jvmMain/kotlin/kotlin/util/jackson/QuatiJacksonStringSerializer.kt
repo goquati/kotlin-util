@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
 import tools.jackson.core.JsonGenerator
 import tools.jackson.core.JsonParser

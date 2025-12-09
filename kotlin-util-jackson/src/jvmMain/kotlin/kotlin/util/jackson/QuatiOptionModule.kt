@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
 import tools.jackson.core.Version
 import tools.jackson.core.json.PackageVersion

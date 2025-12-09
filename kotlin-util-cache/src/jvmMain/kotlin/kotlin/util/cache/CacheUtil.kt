@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.cache
+package de.quati.kotlin.util.cache
 
 import java.time.Instant
 

@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 import kotlin.Result
 import kotlin.contracts.InvocationKind
@@ -7,7 +7,7 @@ import kotlin.contracts.contract
 public fun Result<*>.exceptionOrThrow(): Throwable =
     exceptionOrNull() ?: throw IllegalStateException("Expected an exception, but result was successful.")
 
-public fun <T, E> Result<T>.mapError(block: (Throwable) -> E): io.github.goquati.kotlin.util.Result<T, E> {
+public fun <T, E> Result<T>.mapError(block: (Throwable) -> E): de.quati.kotlin.util.Result<T, E> {
     contract { callsInPlace(block, InvocationKind.AT_MOST_ONCE) }
     return Success(getOrElse { return Failure(block(it)) })
 }

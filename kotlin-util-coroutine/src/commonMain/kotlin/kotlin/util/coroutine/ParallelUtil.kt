@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow

@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.WithTimestamp
+import de.quati.kotlin.util.WithTimestamp
 import io.kotest.matchers.comparables.shouldBeGreaterThanOrEqualTo
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test

@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.SingleResult
-import io.github.goquati.kotlin.util.getOrNull
-import io.github.goquati.kotlin.util.singleResult
+import de.quati.kotlin.util.SingleResult
+import de.quati.kotlin.util.getOrNull
+import de.quati.kotlin.util.singleResult
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

@@ -15,7 +15,7 @@ repositories {
 
 val githubUser = "goquati"
 val githubProject = "kotlin-util"
-val groupStr = "io.github.$githubUser"
+val groupStr = "de.quati"
 val versionStr = System.getenv("GIT_TAG_VERSION") ?: "1.0-SNAPSHOT"
 
 enum class SupProjects(val projectName: String) {

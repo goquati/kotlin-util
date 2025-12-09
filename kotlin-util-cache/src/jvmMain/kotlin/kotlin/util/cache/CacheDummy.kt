@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.cache
+package de.quati.kotlin.util.cache
 
-import io.github.goquati.kotlin.util.Result
+import de.quati.kotlin.util.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred

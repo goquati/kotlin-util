@@ -1,8 +1,8 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
-import io.github.goquati.kotlin.util.Option
-import io.github.goquati.kotlin.util.isSome
-import io.github.goquati.kotlin.util.takeSome
+import de.quati.kotlin.util.Option
+import de.quati.kotlin.util.isSome
+import de.quati.kotlin.util.takeSome
 import tools.jackson.databind.BeanProperty
 import tools.jackson.databind.ValueSerializer
 import tools.jackson.databind.jsontype.TypeSerializer

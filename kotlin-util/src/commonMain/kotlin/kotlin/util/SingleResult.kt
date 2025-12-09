@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 public sealed interface SingleResult<out T> {
     public fun getOrThrow(msg: String? = null): T = when (this) {

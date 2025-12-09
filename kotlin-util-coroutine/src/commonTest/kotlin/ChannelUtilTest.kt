@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.coroutine.sendAll
-import io.github.goquati.kotlin.util.coroutine.toBatchedFlow
-import io.github.goquati.kotlin.util.coroutine.toReceiveChannel
+import de.quati.kotlin.util.coroutine.sendAll
+import de.quati.kotlin.util.coroutine.toBatchedFlow
+import de.quati.kotlin.util.coroutine.toReceiveChannel
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*

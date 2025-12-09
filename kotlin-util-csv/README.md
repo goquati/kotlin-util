@@ -14,7 +14,7 @@
 To use kotlin-util-csv in your project, add the following dependency to your `build.gradle.kts`:
 
 ```kotlin
-implementation("io.github.goquati:kotlin-util-csv:$VERSION")
+implementation("de.quati:kotlin-util-csv:$VERSION")
 ```
 
 ## Usage

@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.valueOf
-import io.github.goquati.kotlin.util.valueOfOrNull
+import de.quati.kotlin.util.valueOf
+import de.quati.kotlin.util.valueOfOrNull
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test

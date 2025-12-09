@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.logging.QuatiLogger
-import io.github.goquati.kotlin.util.logging.executionTime
-import io.github.goquati.kotlin.util.logging.executionTimeCatching
+import de.quati.kotlin.util.logging.QuatiLogger
+import de.quati.kotlin.util.logging.executionTime
+import de.quati.kotlin.util.logging.executionTimeCatching
 import io.kotest.matchers.comparables.shouldBeGreaterThanOrEqualTo
 import io.kotest.matchers.comparables.shouldBeLessThan
 import io.kotest.matchers.shouldBe

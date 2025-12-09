@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.coroutine.getAndResetList
-import io.github.goquati.kotlin.util.coroutine.getAndResetSet
+import de.quati.kotlin.util.coroutine.getAndResetList
+import de.quati.kotlin.util.coroutine.getAndResetSet
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first

@@ -1,7 +1,7 @@
-import io.github.goquati.kotlin.util.asOrNull
-import io.github.goquati.kotlin.util.containsAny
-import io.github.goquati.kotlin.util.intersectAll
-import io.github.goquati.kotlin.util.takeIfNotEmpty
+import de.quati.kotlin.util.asOrNull
+import de.quati.kotlin.util.containsAny
+import de.quati.kotlin.util.intersectAll
+import de.quati.kotlin.util.takeIfNotEmpty
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

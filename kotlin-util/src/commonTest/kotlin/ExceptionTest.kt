@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.QuatiException
+import de.quati.kotlin.util.QuatiException
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

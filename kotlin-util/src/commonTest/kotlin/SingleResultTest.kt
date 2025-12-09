@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.QuatiException
-import io.github.goquati.kotlin.util.SingleResult
-import io.github.goquati.kotlin.util.getOrNull
+import de.quati.kotlin.util.QuatiException
+import de.quati.kotlin.util.SingleResult
+import de.quati.kotlin.util.getOrNull
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test

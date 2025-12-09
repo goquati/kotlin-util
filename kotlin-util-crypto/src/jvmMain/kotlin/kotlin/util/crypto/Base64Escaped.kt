@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.crypto
+package de.quati.kotlin.util.crypto
 
 import kotlin.io.encoding.Base64
 

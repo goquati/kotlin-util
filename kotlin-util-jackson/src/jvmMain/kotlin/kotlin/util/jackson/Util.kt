@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
 import tools.jackson.databind.module.SimpleModule
 import tools.jackson.databind.json.JsonMapper

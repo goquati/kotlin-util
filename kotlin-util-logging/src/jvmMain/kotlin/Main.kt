@@ -1,1 +1,1 @@
-package io.github.goquati
+package de.quati

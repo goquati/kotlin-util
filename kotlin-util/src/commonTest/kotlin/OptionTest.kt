@@ -1,9 +1,9 @@
-import io.github.goquati.kotlin.util.Option
-import io.github.goquati.kotlin.util.isSome
-import io.github.goquati.kotlin.util.isUndefined
-import io.github.goquati.kotlin.util.map
-import io.github.goquati.kotlin.util.takeSome
-import io.github.goquati.kotlin.util.toOption
+import de.quati.kotlin.util.Option
+import de.quati.kotlin.util.isSome
+import de.quati.kotlin.util.isUndefined
+import de.quati.kotlin.util.map
+import de.quati.kotlin.util.takeSome
+import de.quati.kotlin.util.toOption
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.csv.*
+import de.quati.kotlin.util.csv.*
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

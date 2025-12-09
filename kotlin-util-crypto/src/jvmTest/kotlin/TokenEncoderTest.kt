@@ -1,9 +1,9 @@
-import io.github.goquati.kotlin.util.crypto.QuatiApiToken
-import io.github.goquati.kotlin.util.crypto.QuatiApiTokenEncoder
-import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed
-import io.github.goquati.kotlin.util.crypto.QuatiApiTokenParsed.Companion.hint
-import io.github.goquati.kotlin.util.getOrThrow
-import io.github.goquati.kotlin.util.isFailure
+import de.quati.kotlin.util.crypto.QuatiApiToken
+import de.quati.kotlin.util.crypto.QuatiApiTokenEncoder
+import de.quati.kotlin.util.crypto.QuatiApiTokenParsed
+import de.quati.kotlin.util.crypto.QuatiApiTokenParsed.Companion.hint
+import de.quati.kotlin.util.getOrThrow
+import de.quati.kotlin.util.isFailure
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi

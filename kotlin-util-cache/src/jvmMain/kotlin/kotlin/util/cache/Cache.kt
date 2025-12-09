@@ -1,10 +1,10 @@
-package io.github.goquati.kotlin.util.cache
+package de.quati.kotlin.util.cache
 
 import com.github.benmanes.caffeine.cache.*
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.util.getOr
+import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.Result
+import de.quati.kotlin.util.Success
+import de.quati.kotlin.util.getOr
 import kotlinx.coroutines.*
 import kotlinx.coroutines.future.future
 import kotlin.coroutines.coroutineContext

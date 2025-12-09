@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.coroutine.*
+import de.quati.kotlin.util.coroutine.*
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow

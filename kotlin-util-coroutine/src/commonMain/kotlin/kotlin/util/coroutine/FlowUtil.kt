@@ -1,11 +1,11 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.util.associateByNotNull
-import io.github.goquati.kotlin.util.associateWithNotNull
-import io.github.goquati.kotlin.util.groupByNotNull
+import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.Result
+import de.quati.kotlin.util.Success
+import de.quati.kotlin.util.associateByNotNull
+import de.quati.kotlin.util.associateWithNotNull
+import de.quati.kotlin.util.groupByNotNull
 import kotlinx.coroutines.flow.*
 
 public fun <T> Flow<T>?.orEmpty(): Flow<T> = this ?: flowOf()

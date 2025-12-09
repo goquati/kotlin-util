@@ -1,5 +1,5 @@
 import com.fasterxml.jackson.annotation.JsonUnwrapped
-import io.github.goquati.kotlin.util.Option
+import de.quati.kotlin.util.Option
 
 data class ObjectString(
     val value: Option<String>

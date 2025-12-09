@@ -1,7 +1,7 @@
-import io.github.goquati.kotlin.util.eachMaxBy
-import io.github.goquati.kotlin.util.eachMaxOf
-import io.github.goquati.kotlin.util.eachMinBy
-import io.github.goquati.kotlin.util.eachMinOf
+import de.quati.kotlin.util.eachMaxBy
+import de.quati.kotlin.util.eachMaxOf
+import de.quati.kotlin.util.eachMinBy
+import de.quati.kotlin.util.eachMinOf
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.serialization.add
-import io.github.goquati.kotlin.util.serialization.serializersModule
+import de.quati.kotlin.util.serialization.add
+import de.quati.kotlin.util.serialization.serializersModule
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
 import kotlin.test.Test

@@ -1,7 +1,7 @@
-import io.github.goquati.kotlin.util.fromBase64
-import io.github.goquati.kotlin.util.fromBase64UrlSafe
-import io.github.goquati.kotlin.util.toBase64
-import io.github.goquati.kotlin.util.toBase64UrlSafe
+import de.quati.kotlin.util.fromBase64
+import de.quati.kotlin.util.fromBase64UrlSafe
+import de.quati.kotlin.util.toBase64
+import de.quati.kotlin.util.toBase64UrlSafe
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

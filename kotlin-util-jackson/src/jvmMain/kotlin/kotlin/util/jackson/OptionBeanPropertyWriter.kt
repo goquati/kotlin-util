@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
-import io.github.goquati.kotlin.util.Option
+import de.quati.kotlin.util.Option
 import tools.jackson.core.JsonGenerator
 import tools.jackson.databind.PropertyName
 import tools.jackson.databind.SerializationContext

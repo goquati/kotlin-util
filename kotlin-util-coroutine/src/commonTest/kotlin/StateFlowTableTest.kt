@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.coroutine.StateEvent
-import io.github.goquati.kotlin.util.coroutine.StateFlowTable
+import de.quati.kotlin.util.coroutine.StateEvent
+import de.quati.kotlin.util.coroutine.StateFlowTable
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.onStart

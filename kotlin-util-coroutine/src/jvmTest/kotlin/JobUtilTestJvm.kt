@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.coroutine.loopCatching
+import de.quati.kotlin.util.coroutine.loopCatching
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.*

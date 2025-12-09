@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.logging
+package de.quati.kotlin.util.logging
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory.getLogger

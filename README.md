@@ -1,7 +1,7 @@
 # Kotlin Util Libraries
 
 ![GitHub License](https://img.shields.io/github/license/goquati/kotlin-util)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goquati/kotlin-util/check.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goquati/kotlin-util/publish.yml)
 ![Static Badge](https://img.shields.io/badge/coverage-100%25-success)
 
 This repository hosts a collection of Kotlin utility libraries designed to simplify code development. The modules span across various functionalities, offering multiplatform support.
@@ -28,12 +28,12 @@ SLF4J helper functions for Kotlin (JVM only).
 Each subproject is available as a separate dependency. Include the relevant ones in your `build.gradle.kts`:
 
 ```kotlin
-implementation("io.github.goquati:kotlin-util:$VERSION")
-implementation("io.github.goquati:kotlin-util-coroutine:$VERSION")
-implementation("io.github.goquati:kotlin-util-csv:$VERSION")
+implementation("de.quati:kotlin-util:$VERSION")
+implementation("de.quati:kotlin-util-coroutine:$VERSION")
+implementation("de.quati:kotlin-util-csv:$VERSION")
 // For JVM-only:
-implementation("io.github.goquati:kotlin-util-cache:$VERSION")
-implementation("io.github.goquati:kotlin-util-logging:$VERSION")
+implementation("de.quati:kotlin-util-cache:$VERSION")
+implementation("de.quati:kotlin-util-logging:$VERSION")
 ```
 
 ## Documentation

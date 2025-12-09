@@ -1,6 +1,6 @@
 import com.fasterxml.jackson.annotation.JsonUnwrapped
-import io.github.goquati.kotlin.util.Option
-import io.github.goquati.kotlin.util.jackson.QuatiOptionModule
+import de.quati.kotlin.util.Option
+import de.quati.kotlin.util.jackson.QuatiOptionModule
 import io.kotest.matchers.shouldBe
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.kotlinModule

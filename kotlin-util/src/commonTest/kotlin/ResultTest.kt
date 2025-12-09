@@ -1,12 +1,12 @@
-import io.github.goquati.kotlin.util.Failure
-import io.github.goquati.kotlin.util.Result
-import io.github.goquati.kotlin.util.Success
-import io.github.goquati.kotlin.util.failure
-import io.github.goquati.kotlin.util.failureOrNull
-import io.github.goquati.kotlin.util.isFailure
-import io.github.goquati.kotlin.util.isSuccess
-import io.github.goquati.kotlin.util.success
-import io.github.goquati.kotlin.util.successOrNull
+import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.Result
+import de.quati.kotlin.util.Success
+import de.quati.kotlin.util.failure
+import de.quati.kotlin.util.failureOrNull
+import de.quati.kotlin.util.isFailure
+import de.quati.kotlin.util.isSuccess
+import de.quati.kotlin.util.success
+import de.quati.kotlin.util.successOrNull
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

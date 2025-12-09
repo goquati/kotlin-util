@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.QuatiException
-import io.github.goquati.kotlin.util.coroutine.ExchangeTable
-import io.github.goquati.kotlin.util.coroutine.StateEvent
+import de.quati.kotlin.util.QuatiException
+import de.quati.kotlin.util.coroutine.ExchangeTable
+import de.quati.kotlin.util.coroutine.StateEvent
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.async

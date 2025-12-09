@@ -1,5 +1,5 @@
 import kotlin.test.Test
-import io.github.goquati.kotlin.util.AesEncryption
+import de.quati.kotlin.util.AesEncryption
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 

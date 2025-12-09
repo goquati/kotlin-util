@@ -1,4 +1,4 @@
-import io.github.goquati.kotlin.util.serialization.QuatiKotlinxStringSerializer
+import de.quati.kotlin.util.serialization.QuatiKotlinxStringSerializer
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 

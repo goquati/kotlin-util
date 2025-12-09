@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.QuatiException
+import de.quati.kotlin.util.QuatiException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapNotNull

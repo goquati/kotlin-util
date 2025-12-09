@@ -1,8 +1,8 @@
-import io.github.goquati.kotlin.util.combine
-import io.github.goquati.kotlin.util.flatten
-import io.github.goquati.kotlin.util.mapKeysNotNull
-import io.github.goquati.kotlin.util.mapValuesNotNull
-import io.github.goquati.kotlin.util.takeIfNotEmpty
+import de.quati.kotlin.util.combine
+import de.quati.kotlin.util.flatten
+import de.quati.kotlin.util.mapKeysNotNull
+import de.quati.kotlin.util.mapValuesNotNull
+import de.quati.kotlin.util.takeIfNotEmpty
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

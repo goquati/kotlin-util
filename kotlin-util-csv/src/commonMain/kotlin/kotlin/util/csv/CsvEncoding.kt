@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.csv
+package de.quati.kotlin.util.csv
 
 public sealed interface CsvEncoding {
     public val bom: String

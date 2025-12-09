@@ -1,7 +1,7 @@
-package io.github.goquati.kotlin.util.coroutine
+package de.quati.kotlin.util.coroutine
 
-import io.github.goquati.kotlin.util.SingleResult
-import io.github.goquati.kotlin.util.singleResult
+import de.quati.kotlin.util.SingleResult
+import de.quati.kotlin.util.singleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList

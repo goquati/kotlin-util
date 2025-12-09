@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.serialization
+package de.quati.kotlin.util.serialization
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

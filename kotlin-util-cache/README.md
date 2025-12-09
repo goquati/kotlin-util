@@ -15,7 +15,7 @@ The `kotlin-util-cache` project provides a wrapper for asynchronous caching with
 To use this subproject, add it as a dependency in your project:
 
 ```kotlin
-implementation("io.github.goquati.kotlin-util-cache:$VERSION")
+implementation("de.quati.kotlin-util-cache:$VERSION")
 ```
 
 ## Usage

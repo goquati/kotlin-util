@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 public inline fun <reified T : Enum<T>> valueOf(
     value: String,

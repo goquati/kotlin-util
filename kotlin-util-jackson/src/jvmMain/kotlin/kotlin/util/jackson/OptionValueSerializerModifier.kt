@@ -1,6 +1,6 @@
-package io.github.goquati.kotlin.util.jackson
+package de.quati.kotlin.util.jackson
 
-import io.github.goquati.kotlin.util.Option
+import de.quati.kotlin.util.Option
 import tools.jackson.databind.BeanDescription
 import tools.jackson.databind.SerializationConfig
 import tools.jackson.databind.ser.BeanPropertyWriter

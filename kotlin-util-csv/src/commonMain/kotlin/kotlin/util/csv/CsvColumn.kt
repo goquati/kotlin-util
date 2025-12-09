@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util.csv
+package de.quati.kotlin.util.csv
 
 public data class CsvColumn<Row>(
     val name: String,

@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 public fun <T> Iterable<T>.take(n: Int, default: T): List<T> {
     val result = take(n)

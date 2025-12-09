@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 public fun <K,V, C : Map<K,V>> C.takeIfNotEmpty(): C? = takeIf { it.isNotEmpty() }
 

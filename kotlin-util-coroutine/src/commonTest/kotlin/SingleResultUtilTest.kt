@@ -1,5 +1,5 @@
-import io.github.goquati.kotlin.util.SingleResult
-import io.github.goquati.kotlin.util.coroutine.singleResult
+import de.quati.kotlin.util.SingleResult
+import de.quati.kotlin.util.coroutine.singleResult
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf

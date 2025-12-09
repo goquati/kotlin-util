@@ -1,6 +1,6 @@
-import io.github.goquati.kotlin.util.coroutine.lazyAsync
-import io.github.goquati.kotlin.util.coroutine.withNullableTimeout
-import io.github.goquati.kotlin.util.coroutine.withNullableTimeoutOrNull
+import de.quati.kotlin.util.coroutine.lazyAsync
+import de.quati.kotlin.util.coroutine.withNullableTimeout
+import de.quati.kotlin.util.coroutine.withNullableTimeoutOrNull
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.TimeoutCancellationException

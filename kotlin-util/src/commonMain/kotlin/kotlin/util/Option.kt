@@ -1,7 +1,7 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
-import io.github.goquati.kotlin.util.Option.Some
-import io.github.goquati.kotlin.util.Option.Undefined
+import de.quati.kotlin.util.Option.Some
+import de.quati.kotlin.util.Option.Undefined
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline

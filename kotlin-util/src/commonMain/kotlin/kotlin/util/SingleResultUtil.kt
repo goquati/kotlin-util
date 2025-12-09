@@ -1,4 +1,4 @@
-package io.github.goquati.kotlin.util
+package de.quati.kotlin.util
 
 public fun <T : Any> SingleResult<T>.getOrNull(): T? = when (this) {
     is SingleResult.Success -> data

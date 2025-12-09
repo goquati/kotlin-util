@@ -1,7 +1,7 @@
-import io.github.goquati.kotlin.util.jackson.QuatiJacksonStringSerializer
-import io.github.goquati.kotlin.util.jackson.QuatiOptionModule
-import io.github.goquati.kotlin.util.jackson.add
-import io.github.goquati.kotlin.util.jackson.addSimpleModule
+import de.quati.kotlin.util.jackson.QuatiJacksonStringSerializer
+import de.quati.kotlin.util.jackson.QuatiOptionModule
+import de.quati.kotlin.util.jackson.add
+import de.quati.kotlin.util.jackson.addSimpleModule
 import io.kotest.matchers.shouldBe
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.module.kotlin.kotlinModule
