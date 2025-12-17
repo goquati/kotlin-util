@@ -1,5 +1,4 @@
 import org.jetbrains.dokka.DokkaConfiguration.Visibility
-import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
