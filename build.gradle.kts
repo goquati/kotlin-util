@@ -26,6 +26,7 @@ enum class SupProjects(val projectName: String) {
     KOTLIN_UTIL_JACKSON("kotlin-util-jackson"),
     KOTLIN_UTIL_KOTLINX_SERIALIZATION("kotlin-util-kotlinx-serialization"),
     KOTLIN_UTIL_LOGGING("kotlin-util-logging"),
+    KOTLIN_UTIL_POET("kotlin-util-poet"),
 }
 
 tasks.matching { it.name.startsWith("publish") }.configureEach {
@@ -83,6 +84,7 @@ subprojects {
         SupProjects.KOTLIN_UTIL_JACKSON -> "Convenient Jackson utilities for Kotlin, simplifying JSON serialization and deserialization with cleaner and more idiomatic APIs."
         SupProjects.KOTLIN_UTIL_KOTLINX_SERIALIZATION -> "Convenient Kotlinx Serialization utilities for Kotlin, simplifying JSON serialization and deserialization with cleaner and more idiomatic APIs."
         SupProjects.KOTLIN_UTIL_LOGGING -> "Provides convenient helper functions to streamline SLF4J logging in Kotlin, improving logging practices with less boilerplate."
+        SupProjects.KOTLIN_UTIL_POET -> "Convenient KotlinPoet utilities for generating Kotlin source code with cleaner, more expressive, and less repetitive APIs."
     }
     mavenPublishing {
         coordinates(

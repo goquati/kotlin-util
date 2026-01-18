@@ -23,4 +23,5 @@ include(
     "kotlin-util-jackson",
     "kotlin-util-kotlinx-serialization",
     "kotlin-util-logging",
+    "kotlin-util-poet",
 )
