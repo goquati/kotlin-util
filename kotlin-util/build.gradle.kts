@@ -12,6 +12,8 @@ kotlin {
         browser()
         nodejs()
     }
+    iosX64()
+    iosArm64()
     macosX64()
     macosArm64()
     linuxX64()

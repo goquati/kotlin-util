@@ -45,7 +45,7 @@ public fun buildValueClass(
     block: TypeSpec.Builder.() -> Unit,
 ): TypeSpec = TypeSpec.classBuilder(name).apply {
     addModifiers(KModifier.VALUE)
-    addAnnotation(JvmInline::class)
+    addAnnotation(ClassName("kotlin.jvm", "JvmInline"))
     block()
 }.build()
 
