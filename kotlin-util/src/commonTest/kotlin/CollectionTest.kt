@@ -1,5 +1,6 @@
 import de.quati.kotlin.util.asOrNull
 import de.quati.kotlin.util.containsAny
+import de.quati.kotlin.util.containsNone
 import de.quati.kotlin.util.intersectAll
 import de.quati.kotlin.util.takeIfNotEmpty
 import io.kotest.matchers.shouldBe
@@ -23,10 +24,22 @@ class CollectionTest {
 
     @Test
     fun testContainsAny() {
+        listOf(1, 2, 3, 4).containsAny() shouldBe false
         listOf(1, 2, 3, 4).containsAny(2, 7, 8) shouldBe true
         listOf(1, 2, 3, 4).containsAny(6, 7, 8) shouldBe false
-        listOf(1, 2, 3, 4).containsAny(listOf(2, 7, 8)) shouldBe true
-        listOf(1, 2, 3, 4).containsAny(listOf(6, 7, 8)) shouldBe false
+        listOf(1, 2, 3, 4) containsAny listOf() shouldBe false
+        listOf(1, 2, 3, 4) containsAny listOf(2, 7, 8) shouldBe true
+        listOf(1, 2, 3, 4) containsAny listOf(6, 7, 8) shouldBe false
+    }
+
+    @Test
+    fun testContainsNone() {
+        listOf(1, 2, 3, 4).containsNone() shouldBe true
+        listOf(1, 2, 3, 4).containsNone(2, 7, 8) shouldBe false
+        listOf(1, 2, 3, 4).containsNone(6, 7, 8) shouldBe true
+        listOf(1, 2, 3, 4) containsNone listOf() shouldBe true
+        listOf(1, 2, 3, 4) containsNone listOf(2, 7, 8) shouldBe false
+        listOf(1, 2, 3, 4) containsNone listOf(6, 7, 8) shouldBe true
     }
 
     @Test
