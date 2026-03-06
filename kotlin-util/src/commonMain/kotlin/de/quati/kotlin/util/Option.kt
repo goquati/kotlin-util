@@ -14,7 +14,13 @@ public sealed interface Option<out T> {
 
 public val Option<*>.isSome: Boolean get() = this is Some
 public val Option<*>.isUndefined: Boolean get() = this is Undefined
-public fun <T> Option<T>.takeSome(): Some<T>? = this as? Some
+public fun <T> Option<T>.takeSome(): Some<T>? {
+    contract {
+        returnsNotNull() implies (this@takeSome is Some<T>)
+    }
+    return this as? Some<T>
+}
+
 public fun <T> T.toOption(): Some<T> = Some(this)
 
 public inline fun <T, R> Option<T>.map(block: (T) -> R): Option<R> {

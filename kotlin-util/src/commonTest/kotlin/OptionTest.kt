@@ -42,4 +42,16 @@ class OptionTest {
         "foobar".toOption() shouldBe Option.Some("foobar")
         null.toOption<String?>() shouldBe Option.Some<String?>(null)
     }
+
+    @Test
+    fun optionTakeSomeTests() {
+        (Option.Some("hello") as Option<String>).also {
+            it.takeSome()!!.value shouldBe "hello"
+            it.value shouldBe "hello" // smart cast
+        }
+        (Option.Some("world") as Option<String>).also {
+            if (it.takeSome() != null)
+                it.value shouldBe "world" // smart cast
+        }
+    }
 }
