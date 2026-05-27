@@ -114,7 +114,7 @@ public class CoalescingTaskRunner(
             try {
                 task()
             } catch (t: Throwable) {
-                runCatching { errorHandler(t) }
+                errorHandler(t)
             }
         }
     }

@@ -12,7 +12,6 @@ kotlin {
         browser()
         nodejs()
     }
-    macosX64()
     macosArm64()
     linuxX64()
     linuxArm64()
@@ -26,9 +25,10 @@ kotlin {
             @OptIn(ExperimentalKotlinGradlePluginApi::class)
             compilerOptions {
                 allWarningsAsErrors = true
-                apiVersion.set(KotlinVersion.KOTLIN_2_2)
-                languageVersion.set(KotlinVersion.KOTLIN_2_2)
+                apiVersion.set(KotlinVersion.KOTLIN_2_3)
+                languageVersion.set(KotlinVersion.KOTLIN_2_3)
                 freeCompilerArgs.add("-Xcontext-parameters")
+                freeCompilerArgs.add("-Xreturn-value-checker=full")
             }
             dependencies {
                 api(project(":kotlin-util"))

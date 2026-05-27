@@ -17,13 +17,15 @@ class FlowUtilTest {
 
     @Test
     fun testOrEmpty(): TestResult = runTest {
-        flowOf(1,2,3).takeIf { false }.orEmpty().toList() shouldBe listOf()
-        flowOf(1,2,3).takeIf { true }.orEmpty().toList() shouldBe listOf(1,2,3)
+        flowOf(1, 2, 3).takeIf { false }.orEmpty().toList() shouldBe listOf()
+        flowOf(1, 2, 3).takeIf { true }.orEmpty().toList() shouldBe listOf(1, 2, 3)
     }
 
     @Test
     fun testIsEmpty(): TestResult = runTest {
-        suspend fun test(vararg data: Int) = data.toList().asFlow().isEmpty() shouldBe data.isEmpty()
+        suspend fun test(vararg data: Int) {
+            data.toList().asFlow().isEmpty() shouldBe data.isEmpty()
+        }
         test()
         test(1)
         test(1, 2)
@@ -35,7 +37,9 @@ class FlowUtilTest {
 
     @Test
     fun testIsNotEmpty(): TestResult = runTest {
-        suspend fun test(vararg data: Int) = data.toList().asFlow().isNotEmpty() shouldBe data.isNotEmpty()
+        suspend fun test(vararg data: Int) {
+            data.toList().asFlow().isNotEmpty() shouldBe data.isNotEmpty()
+        }
         test()
         test(1)
         test(1, 2)
@@ -46,10 +50,15 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testAny(): TestResult = runTest {
-        suspend fun test(vararg data: Int) = data.toList().asFlow().any() shouldBe data.toList().any()
-        suspend fun testPredicate(vararg data: Boolean) =
+        suspend fun test(vararg data: Int) {
+            data.toList().asFlow().any() shouldBe data.toList().any()
+        }
+
+        suspend fun testPredicate(vararg data: Boolean) {
             data.toList().asFlow().any { it } shouldBe data.toList().any { it }
+        }
         test()
         test(1)
         test(1, 2)
@@ -69,9 +78,11 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testAll(): TestResult = runTest {
-        suspend fun testPredicate(vararg data: Boolean) =
+        suspend fun testPredicate(vararg data: Boolean) {
             data.toList().asFlow().all { it } shouldBe data.toList().all { it }
+        }
         testPredicate()
         testPredicate(true)
         testPredicate(false)
@@ -84,10 +95,15 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testNone(): TestResult = runTest {
-        suspend fun test(vararg data: Int) = data.toList().asFlow().none() shouldBe data.toList().none()
-        suspend fun testPredicate(vararg data: Boolean) =
+        suspend fun test(vararg data: Int) {
+            data.toList().asFlow().none() shouldBe data.toList().none()
+        }
+
+        suspend fun testPredicate(vararg data: Boolean) {
             data.toList().asFlow().none { it } shouldBe data.toList().none { it }
+        }
         test()
         test(1)
         test(1, 2)
@@ -114,6 +130,7 @@ class FlowUtilTest {
     @Test
     fun testGroup(): TestResult = runTest {
         flowOf<String>().groupByNotNull { it.length } shouldBe mapOf()
+        @Suppress("DEPRECATION")
         flowOf("apple", "banana", "orange").groupBy { it.length } shouldBe mapOf(
             5 to listOf("apple"),
             6 to listOf("banana", "orange")
@@ -135,6 +152,7 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testGroupByWithValueTransform(): TestResult = runTest {
         flowOf<String>().groupBy({ it[0] }, { it.length }) shouldBe mapOf()
         flowOf("apple", "banana", "avocado").groupBy({ it[0] }, { it.length }) shouldBe mapOf(
@@ -165,6 +183,7 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testAssociate(): TestResult = runTest {
         flowOf<String>().associate { it.length to it } shouldBe mapOf()
         flowOf("apple", "banana", "orange").associate { it to it.length } shouldBe mapOf(
@@ -213,6 +232,7 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testAssociateBy(): TestResult = runTest {
         flowOf<String>().associateBy { it.length } shouldBe mapOf()
         flowOf("apple", "banana", "avocado").associateBy { it.length } shouldBe mapOf(
@@ -255,6 +275,7 @@ class FlowUtilTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun testAssociateWith(): TestResult = runTest {
         flowOf<String>().associateWith { it.length } shouldBe mapOf()
         flowOf("apple", "banana", "orange").associateWith { it.length } shouldBe mapOf(

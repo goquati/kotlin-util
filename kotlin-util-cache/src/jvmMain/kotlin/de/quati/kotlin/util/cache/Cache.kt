@@ -164,9 +164,13 @@ public class Cache<K : Any, V : Any>(
                     caffeine.weigher(e.weigher)
                 }
             }
-            initialCapacity?.let { caffeine.initialCapacity(it) }
-            removalListener?.let { caffeine.removalListener(it::notify) }
-            ticker?.let { caffeine.ticker(it) }
+            initialCapacity?.also { caffeine.initialCapacity(it) }
+            removalListener?.also {
+                caffeine.removalListener<K, V> { k, v, cause ->
+                    val job = it.notify(k, v, cause)
+                }
+            }
+            ticker?.also { caffeine.ticker(it) }
             return Cache(
                 defaultScope = defaultScope,
                 cache = caffeine.buildAsync(),

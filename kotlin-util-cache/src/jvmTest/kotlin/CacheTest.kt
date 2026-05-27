@@ -187,7 +187,7 @@ class CacheTest {
             )
             ticker { time }
         }
-        cache.put("foobar") { 47 }
+        cache.put("foobar") { 47 } shouldBe 47
         nofWrite shouldBe 1
         cache.get("foobar") { 48 } shouldBe 47
         nofRead shouldBe 1
@@ -409,12 +409,12 @@ class CacheTest {
             launch {
                 waiting.update { it + 1 }
                 waiting.first { it == 2 }
-                cache.getCatching("k2") { delay(200); nofCalls.update { it + 1 }; Success(2) }
+                val r = cache.getCatching("k2") { delay(200); nofCalls.update { it + 1 }; Success(2) }
             }
             launch {
                 waiting.update { it + 1 }
                 waiting.first { it == 2 }
-                cache.getCatching("k2") { delay(200); nofCalls.update { it + 1 }; Success(2) }
+                val r = cache.getCatching("k2") { delay(200); nofCalls.update { it + 1 }; Success(2) }
             }
         }
         nofCalls.value shouldBe 1

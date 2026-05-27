@@ -10,6 +10,7 @@ public data class CsvSchema<Row>(
     public class Builder<Row> {
         private val columns: MutableList<CsvColumn<Row>> = mutableListOf()
 
+        @IgnorableReturnValue
         public fun column(
             name: String,
             forceEscape: Boolean = false,
@@ -22,6 +23,7 @@ public data class CsvSchema<Row>(
             )
         )
 
+        @IgnorableReturnValue
         public fun column(
             field: KProperty1<Row, *>,
             name: String? = null,

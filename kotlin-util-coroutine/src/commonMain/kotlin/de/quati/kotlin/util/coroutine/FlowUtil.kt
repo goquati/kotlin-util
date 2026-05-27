@@ -16,25 +16,32 @@ public suspend fun <T> Flow<T>.isNotEmpty(): Boolean = take(1).count() == 1
 public suspend fun <T> Flow<T>.any(): Boolean = take(1).count() == 1
 public suspend fun <T> Flow<T>.none(): Boolean = take(1).count() == 0
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T> Flow<T>.any(crossinline predicate: (T) -> Boolean): Boolean =
     filter(predicate).take(1).count() != 0
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T> Flow<T>.all(crossinline predicate: suspend (T) -> Boolean): Boolean =
     filterNot(predicate).take(1).count() == 0
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T> Flow<T>.none(crossinline predicate: suspend (T) -> Boolean): Boolean =
     filter(predicate).take(1).count() == 0
 
 public fun <T, C : Collection<T>> Flow<C>.filterNotEmpty(): Flow<C> = filter { !it.isEmpty() }
 
+
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K, V> Flow<T>.associate(
     crossinline block: (T) -> Pair<K, V>,
-): Map<K, V> = toList().associate(block)
+): Map<K, V> =  toList().associate(block)
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K> Flow<T>.associateBy(
     crossinline keySelector: (T) -> K,
 ): Map<K, T> = toList().associateBy(keySelector)
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, V> Flow<T>.associateWith(
     crossinline valueSelector: (T) -> V,
 ): Map<T, V> = toList().associateWith(valueSelector)
@@ -55,9 +62,11 @@ public suspend inline fun <T, V : Any> Flow<T>.associateWithNotNull(
 ): Map<T, V> = toList().associateWithNotNull(valueSelector)
 
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K> Flow<T>.groupBy(keySelector: (T) -> K): Map<K, List<T>> =
     toList().groupBy(keySelector)
 
+@Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K, V> Flow<T>.groupBy(
     keySelector: (T) -> K,
     valueTransform: (T) -> V,
@@ -130,3 +139,4 @@ public suspend inline fun <T, R : Comparable<R>> Flow<T>.minOfOrNull(crossinline
         .runningReduce { acc, value -> minOf(acc, value, compareBy { it.second }) }
         .map { it.second }
         .lastOrNull()
+

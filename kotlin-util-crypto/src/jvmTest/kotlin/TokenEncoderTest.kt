@@ -85,7 +85,14 @@ class TokenEncoderTest {
         QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN"))
             .isFailure() shouldBe true
         QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lTga"))
-            .getOrThrow()
+            .getOrThrow() shouldBe QuatiApiTokenParsed.Simple(
+            product = "quati",
+            version = "v3",
+            env = "stg",
+            id = Uuid.parse("6d797633-e609-4820-ac3f-e62ab1efb435"),
+            secret = Uuid.parse("9bcdd265-c88d-432f-a721-bad829749538"),
+            info = "",
+        )
         val token =
             QuatiApiTokenParsed.parseSimple(QuatiApiToken.Simple("quati_v3_stg_bXl2MgdYJSCCsPgdYqsegd0NZvN0mXIjUMvpyG62Cl0lThoZWxsbyB3b3JsZA"))
                 .getOrThrow()
