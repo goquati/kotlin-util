@@ -338,4 +338,21 @@ class FlowUtilTest {
         test("a", "b", "c")
         test("a", "ab", "abc")
     }
+
+    @Test
+    fun testGroupConsecutiveBy(): TestResult = runTest {
+        flowOf<Int>().groupConsecutiveBy { it }.toList() shouldBe listOf()
+        flowOf(1, 1, 2, 2, 2, 1, 3).groupConsecutiveBy { it }.toList() shouldBe listOf(
+            listOf(1, 1), listOf(2, 2, 2), listOf(1), listOf(3)
+        )
+        flowOf(1).groupConsecutiveBy { it % 2 }.toList() shouldBe listOf(
+            listOf(1)
+        )
+        flowOf(1, 1, 3).groupConsecutiveBy { it % 2 }.toList() shouldBe listOf(
+            listOf(1, 1, 3)
+        )
+        flowOf(1, 1, 3, 2, 4, 1).groupConsecutiveBy { it % 2 }.toList() shouldBe listOf(
+            listOf(1, 1, 3), listOf(2, 4), listOf(1)
+        )
+    }
 }

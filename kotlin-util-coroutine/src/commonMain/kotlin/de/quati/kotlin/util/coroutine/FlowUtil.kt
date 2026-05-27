@@ -1,11 +1,13 @@
 package de.quati.kotlin.util.coroutine
 
 import de.quati.kotlin.util.Failure
+import de.quati.kotlin.util.Option
 import de.quati.kotlin.util.Result
 import de.quati.kotlin.util.Success
 import de.quati.kotlin.util.associateByNotNull
 import de.quati.kotlin.util.associateWithNotNull
 import de.quati.kotlin.util.groupByNotNull
+import de.quati.kotlin.util.takeSome
 import kotlinx.coroutines.flow.*
 
 public fun <T> Flow<T>?.orEmpty(): Flow<T> = this ?: flowOf()
@@ -34,7 +36,7 @@ public fun <T, C : Collection<T>> Flow<C>.filterNotEmpty(): Flow<C> = filter { !
 @Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K, V> Flow<T>.associate(
     crossinline block: (T) -> Pair<K, V>,
-): Map<K, V> =  toList().associate(block)
+): Map<K, V> = toList().associate(block)
 
 @Deprecated("this function is part of kotlinx.coroutines")
 public suspend inline fun <T, K> Flow<T>.associateBy(
@@ -140,3 +142,36 @@ public suspend inline fun <T, R : Comparable<R>> Flow<T>.minOfOrNull(crossinline
         .map { it.second }
         .lastOrNull()
 
+/**
+ * Groups a Flow<T> into a Flow<List<T>> by grouping consecutive elements
+ * that share the same key, as determined by [keySelector].
+ *
+ * A new chunk begins whenever the key changes.
+ *
+ * Example:
+ *   flowOf(1, 1, 2, 2, 2, 1, 3).groupConsecutiveBy { it }
+ *   → [1, 1], [2, 2, 2], [1], [3]
+ */
+public fun <T, K> Flow<T>.groupConsecutiveBy(keySelector: (T) -> K): Flow<List<T>> = flow {
+    var currentChunk = mutableListOf<T>()
+    var currentKey: Option<K> = Option.Undefined
+
+    collect { element ->
+        val key = keySelector(element)
+        val cKey = currentKey.takeSome() ?: run {
+            currentKey = Option.Some(key)
+            currentChunk.add(element)
+            return@collect
+        }
+        if (key == cKey.value)
+            currentChunk.add(element)
+        else {
+            emit(currentChunk.toList())
+            currentChunk = mutableListOf(element)
+            currentKey = Option.Some(key)
+        }
+    }
+
+    if (currentChunk.isNotEmpty())
+        emit(currentChunk.toList())
+}
