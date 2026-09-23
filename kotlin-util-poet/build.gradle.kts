@@ -20,6 +20,7 @@ kotlin {
                 apiVersion.set(KotlinVersion.KOTLIN_2_3)
                 languageVersion.set(KotlinVersion.KOTLIN_2_3)
                 freeCompilerArgs.add("-Xreturn-value-checker=full")
+                freeCompilerArgs.add("-Xcontext-parameters")
             }
             dependencies {
                 implementation("com.squareup:kotlinpoet:2.2.0")

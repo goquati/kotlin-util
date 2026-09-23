@@ -2,7 +2,7 @@ package de.quati.kotlin.util.poet
 
 public class NameConflictResolver(
     private val separator: String = "_",
-    forbidden: Iterable<String> = kotlinKeywords,
+    forbidden: Iterable<String> = KotlinKeywords.hard,
 ) {
     private val forbiddenNames: MutableSet<String> = forbidden.toMutableSet()
 
