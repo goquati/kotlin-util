@@ -18,6 +18,18 @@ class NamingUtilTest {
         "".toCamelCase(capitalized = false) shouldBe "_empty"
         "1abc".toCamelCase(capitalized = false) shouldBe "_1abc"
         "-abc".toCamelCase(capitalized = false) shouldBe "abc"
+
+        // Punctuation separates words
+        "filter[field]".toCamelCase(capitalized = false) shouldBe "filterField"
+        "scope.project.id".toCamelCase(capitalized = false) shouldBe "scopeProjectId"
+        "binding:host_id".toCamelCase(capitalized = true) shouldBe "BindingHostId"
+        "application/json".toCamelCase(capitalized = false) shouldBe "applicationJson"
+        "hi@there!".toCamelCase(capitalized = false) shouldBe "hiThere"
+        "[field]".toCamelCase(capitalized = false) shouldBe "field"
+
+        // Diacritics still transliterate inside a word
+        "Müller.straße".toCamelCase(capitalized = false) shouldBe "muellerStrasse"
+        "Crème Brûlée".toCamelCase(capitalized = true) shouldBe "CremeBrulee"
     }
 
     @Test
@@ -28,6 +40,9 @@ class NamingUtilTest {
         "".toKebabCase() shouldBe "_empty"
         "1abc".toKebabCase() shouldBe "_1abc"
         "-abc".toKebabCase() shouldBe "abc"
+
+        "filter[field]".toKebabCase() shouldBe "filter-field"
+        "scope.project.id".toKebabCase() shouldBe "scope-project-id"
     }
 
     @Test
@@ -39,6 +54,9 @@ class NamingUtilTest {
         "".toSnakeCase() shouldBe "_empty"
         "1abc".toSnakeCase() shouldBe "_1abc"
         "-abc".toSnakeCase() shouldBe "abc"
+
+        "filter[field]".toSnakeCase(uppercase = true) shouldBe "FILTER_FIELD"
+        "router:external".toSnakeCase() shouldBe "router_external"
     }
 
     @Test

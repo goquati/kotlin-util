@@ -72,7 +72,9 @@ private fun String.toValidName() = when {
 }
 
 private fun String.toNameParts(): List<String> =
-    toAsciiIdentifierLike()
+    map { if (it.isLetterOrDigit() || it.isCombiningMark()) it else ' ' }
+        .joinToString(separator = "")
+        .toAsciiIdentifierLike()
         .split(' ', '_', '-')
         .filter { it.isNotEmpty() }
 
